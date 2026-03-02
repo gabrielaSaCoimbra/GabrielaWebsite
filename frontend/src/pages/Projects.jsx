@@ -134,8 +134,8 @@ export function Projects() {
 												<img src={imgUrl(it.image, 1800)} alt={it.image?.alt || ''} className='w-full h-auto object-cover' loading='lazy' decoding='async' />
 											</div>
 
-											{/* TAG */}
-											<div className='mt-4 text-sm opacity-60'>{it.tag}</div>
+											{it.title ? <div className='mt-4 text-nav opacity-90 font-[600]'>{it.title}</div> : null}
+											<div className='mt-1 text-sm opacity-60'>{it.tag}</div>
 										</motion.div>
 									);
 								}

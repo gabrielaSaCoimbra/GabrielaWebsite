@@ -158,7 +158,7 @@ export function Archive() {
 											transition={{ duration: 0.18, ease: 'easeOut' }}
 										>
 											{/* Title */}
-											<div className='col-span-7 text-nav font-[600] '>{it.kind === 'ambient' ? '' : it.title}</div>
+											<div className='col-span-7 text-nav font-[600] '>{it.title || ''}</div>
 
 											{/* Category tag */}
 											<div className='col-span-2 text-navLight opacity-80 '>{it.tag || CATEGORY_LABEL[it.category] || it.category}</div>
