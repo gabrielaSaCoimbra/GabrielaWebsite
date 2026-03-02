@@ -6,6 +6,7 @@ import { Projects } from './pages/Projects.jsx';
 import { Contacts } from './pages/Contacts.jsx';
 import { ErrorPage } from './pages/ErrorPage.jsx';
 import { ProjectSlug } from './pages/ProjectSlug';
+import { Archive } from './pages/Archive';
 
 export const router = createBrowserRouter([
 	{
@@ -26,10 +27,13 @@ export const router = createBrowserRouter([
 				element: <Projects />,
 			},
 			{
-				path: 'projects/:slug',
-				element: <ProjectSlug />
+				path: '/projects/:slug',
+				element: <ProjectSlug />,
 			},
-
+			{
+				path: '/archive',
+				element: <Archive />,
+			},
 			{
 				path: '/contact',
 				element: <Contacts />,

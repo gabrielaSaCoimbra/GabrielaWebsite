@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import sanityClient from '../lib/sanity.client';
-import { WORKS_INDEX_QUERY } from '../lib/sanity.queries.js';
+import { ARCHIVE_INDEX_QUERY } from '../lib/sanity.queries.js';
 
-export function useProjectsIndex() {
+export function useArchiveIndex() {
 	const [data, setData] = useState({ ambient: [], projects: [] });
 	const [loading, setLoading] = useState(true);
 
@@ -11,7 +11,7 @@ export function useProjectsIndex() {
 
 		(async () => {
 			try {
-				const res = await sanityClient.fetch(WORKS_INDEX_QUERY);
+				const res = await sanityClient.fetch(ARCHIVE_INDEX_QUERY);
 				if (!alive) return;
 
 				setData({
@@ -19,7 +19,7 @@ export function useProjectsIndex() {
 					projects: res?.projects || [],
 				});
 			} catch (e) {
-				console.error('Works index fetch failed', e);
+				console.error('Archive index fetch failed', e);
 			} finally {
 				if (alive) setLoading(false);
 			}
@@ -32,4 +32,3 @@ export function useProjectsIndex() {
 
 	return { data, loading };
 }
-

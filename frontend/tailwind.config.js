@@ -30,6 +30,7 @@ export default {
 				lead: ['clamp(1.25rem, 4.2vw, 4rem)', { lineHeight: '1', letterSpacing: '-0.02em' }],
 				lead2: ['clamp(1.25rem, 4.5vw, 4.5rem)', { lineHeight: '1', letterSpacing: '-0.03em' }],
 				nav: ['1.1rem', { lineHeight: '1.2', fontWeight: '600', letterSpacing: '-0.05em' }],
+				navLight: ['1.1rem', { lineHeight: '1.2', fontWeight: '400', letterSpacing: '-0.05em' }],
 				label: ['0.7rem', { lineHeight: '1.2', letterSpacing: '0.08em' }],
 			},
 		},
