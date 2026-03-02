@@ -1,0 +1,18 @@
+{
+	"interiors": [
+		{ "id": 1, "url": "/images/interior1.jpg" },
+		{ "id": 2, "url": "/images/interior2.jpg" }
+	],
+	"ambient": [
+		{ "id": 1, "url": "/images/ambient1.jpg" },
+		{ "id": 2, "url": "/images/ambient2.jpg" }
+	],
+	"exhibitions": [
+		{ "id": 1, "url": "/images/exhibition1.jpg" },
+		{ "id": 2, "url": "/images/exhibition2.jpg" }
+	],
+	"product": [
+		{ "id": 1, "url": "/images/product1.jpg" },
+		{ "id": 2, "url": "/images/product2.jpg" }
+	]
+}

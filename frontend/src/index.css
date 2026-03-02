@@ -1,0 +1,172 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+:root {
+	--bg: 248 245 241;
+	--fg: 18 18 18;
+	--muted: 110 110 110;
+	--border: 220 220 220;
+	--accent: 110 92 255;
+}
+
+html,
+body {
+	height: 100%;
+}
+
+body {
+	background: rgb(var(--bg));
+	color: rgb(var(--fg));
+	font-family: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+	background: rgb(var(--accent) / 0.18);
+}
+
+
+
+
+
+.glass-pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 0.75rem 2rem;
+  border-radius: 3.2rem;
+  background: rgba(128, 128, 128, 0.30);
+  backdrop-filter: blur(30px) saturate(140%);
+  -webkit-backdrop-filter: blur(30px) saturate(140%);
+  box-shadow: 0 0.6rem 3rem rgba(0, 0, 0, 0.13);
+}
+
+.glass-pill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  border: 0.6px solid transparent;
+  background:
+    linear-gradient(
+      150deg,
+      rgba(255,255,255,.40) 5.12%,
+      rgba(255,255,255,.0001) 20%,
+      rgba(255,255,255,.0001) 64.33%,
+      rgba(255,255,255,.1) 63.02%
+    ) border-box;
+
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+
+  opacity: 0.85;
+  transition: opacity .45s cubic-bezier(.55, 0, .1, 1);
+}
+
+.glass-pill:hover::after {
+  opacity: 1;
+}
+
+.glass-pill__item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex-shrink: 0;
+
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: -0.05em;
+
+  color: rgba(255,255,255,0.8);
+  opacity: 0.80;
+  mix-blend-mode: lighten;
+
+  background: transparent;
+  border: 0;
+  padding: 0;
+
+  transition: opacity .45s cubic-bezier(.55, 0, .1, 1);
+}
+
+.glass-pill__item:hover {
+  opacity: 0.95;
+}
+
+.glass-pill__item.is-active {
+  opacity: 1;
+  pointer-events: none;
+}
+
+.glass-pill__item:focus-visible {
+  outline: 2px solid rgb(var(--accent));
+  outline-offset: 6px;
+  border-radius: 9999px;
+}
+
+@media (prefers-color-scheme: light) {
+  .glass-pill {
+    background: rgba(160, 160, 160, 0.26);
+  }
+}
+
+.marquee {
+	--gap: 5rem;
+	--card-w: clamp(260px, 26vw, 520px);
+	--card-r: 1rem;
+	--duration: 80s;
+
+	position: relative;
+	overflow: hidden;
+}
+
+
+
+.marquee__track {
+	display: flex;
+	align-items: center;
+	gap: var(--gap);
+	width: max-content;
+	will-change: transform;
+	animation: marquee var(--duration) linear infinite;
+}
+
+/* pausa no hover (opcional) */
+.marquee:hover .marquee__track {
+	animation-play-state: paused;
+}
+
+.marquee--reverse .marquee__track {
+	animation-direction: reverse;
+	opacity: 0.95;
+}
+
+.marquee__item {
+	flex: 0 0 auto;
+	width: var(--card-w);
+}
+
+.marquee__card {
+	border-radius: var(--card-r);
+	overflow: hidden;
+}
+
+.marquee__img {
+	display: block;
+	width: 100%;
+	height: auto; /* mantém proporção */
+}
+
+/* desloca metade do “track” (porque duplicámos o conteúdo) */
+@keyframes marquee {
+	from { transform: translateX(0); }
+	to { transform: translateX(calc(-50% - (var(--gap) / 2))); }
+}
