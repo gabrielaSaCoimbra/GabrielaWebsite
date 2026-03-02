@@ -16,7 +16,7 @@ export default {
     },
     {
       name: 'featured',
-      title: 'Show in Works (Selected)',
+      title: 'Show in Works ',
       type: 'boolean',
       initialValue: true,
     },
