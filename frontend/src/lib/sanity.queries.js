@@ -21,15 +21,7 @@ export const WORKS_OVERVIEW_QUERY = `
 }
 `;
 
-// AMBIENT WORKS (galeria simples)
-export const AMBIENT_GALLERY_QUERY = `
-*[_type == "ambientGallery"][0]{
-  images[]{
-    alt,
-    asset->
-  }
-}
-`;
+
 
 /* =========================
    PROJECTS
@@ -81,18 +73,22 @@ export const PROJECT_BY_SLUG_QUERY = `
 }
 `;
 
-
 export const PROJECTS_INDEX_QUERY = `
 {
-  "ambient": *[_type == "ambientGallery"][0].images[]{
-    _key,
-    alt,
+  "ambient": *[_type == "ambientItem"] | order(coalesce(year,0) desc, _createdAt desc){
+    _id,
+    title,
+    year,
+    featured,
     "category": "ambient",
     "tag": "Ambient",
-    asset->{
-      _id,
-      url,
-      metadata{dimensions{width,height,aspectRatio}}
+    image{
+      alt,
+      asset->{
+        _id,
+        url,
+        metadata{dimensions{width,height,aspectRatio}}
+      }
     }
   },
   "projects": *[_type == "project"] | order(coalesce(year,0) desc, _createdAt desc){
@@ -106,7 +102,6 @@ export const PROJECTS_INDEX_QUERY = `
       category == "architecture" => "Architecture",
       category == "product" => "Product",
       category == "exhibition" => "Exhibitions",
-      category == "ambient" => "Ambient",
       "Project"
     ),
     "cover": images[0]{
@@ -120,4 +115,3 @@ export const PROJECTS_INDEX_QUERY = `
   }
 }
 `;
-

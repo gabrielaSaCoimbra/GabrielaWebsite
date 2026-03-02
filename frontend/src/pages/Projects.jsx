@@ -43,8 +43,6 @@ function normalizeCat(value) {
 
 export function Projects() {
 	const { data, loading } = useProjectsIndex();
-
-	// URL state (source of truth)
 	const [searchParams, setSearchParams] = useSearchParams();
 	const filter = normalizeCat(searchParams.get('cat') || 'all');
 	const heading = HEADING_BY_FILTER[filter] || 'All Projects';
@@ -52,7 +50,6 @@ export function Projects() {
 	const setFilter = next => {
 		const cat = normalizeCat(next);
 		if (cat === 'all') {
-			// URL limpa
 			setSearchParams({}, { replace: true });
 		} else {
 			setSearchParams({ cat }, { replace: true });
@@ -60,11 +57,13 @@ export function Projects() {
 	};
 
 	const items = useMemo(() => {
-		const ambientItems = (data.ambient || []).map(img => ({
+		const ambientItems = (data.ambient || []).map(a => ({
 			kind: 'ambient',
-			id: img.asset?._id || img._key,
-			image: img,
-			tag: img.tag,
+			id: a._id,
+			image: a.image, 
+			title: a.title, 
+			year: a.year, 
+			tag: a.tag, 
 		}));
 
 		const projectItems = (data.projects || []).map(p => ({

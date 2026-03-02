@@ -1,6 +1,6 @@
 import about from './about'
-import ambientGallery from "./ambientGallery"
+import ambientItem from './ambientItem'
 import project from "./project"
 import worksOverview from "./worksOverview"
 
-export const schemaTypes = [about, ambientGallery, project, worksOverview]
+export const schemaTypes = [about, ambientItem, project, worksOverview]
