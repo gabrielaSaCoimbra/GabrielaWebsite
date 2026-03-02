@@ -1,6 +1,6 @@
 export default {
   name: 'ambientItem',
-  title: 'Ambient Items',
+  title: 'Ambient Works',
   type: 'document',
   fields: [
     {

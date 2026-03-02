@@ -1,6 +1,6 @@
 export default {
   name: 'project',
-  title: 'Projects',
+  title: 'Architecture, Product, Exhibition Works',
   type: 'document',
   fields: [
     {
@@ -31,7 +31,12 @@ export default {
       validation: (Rule) => Rule.required(),
     },
 
-    // opcionais:
+    {
+      name: 'featured',
+      title: 'Show in Works (Selected)',
+      type: 'boolean',
+      initialValue: true,
+    },
     {
       name: 'year',
       title: 'Year (optional)',
