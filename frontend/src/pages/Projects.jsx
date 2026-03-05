@@ -108,13 +108,13 @@ export function Projects() {
 					<div className='columns-1 md:columns-2 lg:columns-3 [column-gap:2rem]'>
 						{Array.from({ length: 9 }).map((_, i) => (
 							<div key={i} className='mb-10 break-inside-avoid'>
-								<div className='bg-border/30 rounded-[1rem] h-[280px]' />
+								<div className='bg-border/30  h-[280px]' />
 								<div className='mt-3 h-4 w-40 bg-border/30 rounded' />
 							</div>
 						))}
 					</div>
 				) : (
-					<motion.div className='columns-1 md:columns-2 lg:columns-3 [column-gap:2rem]'>
+					<motion.div className='columns-1 md:columns-2 lg:columns-3 [column-gap:3rem]'>
 						<AnimatePresence initial={false}>
 							{items.map(it => {
 								const key = `${it.kind}-${it.id}`;
@@ -130,7 +130,7 @@ export function Projects() {
 											transition={{ duration: 0.25, ease: 'easeOut' }}
 											className='mb-10 break-inside-avoid'
 										>
-											<div className='rounded-[1rem] overflow-hidden bg-border/20'>
+											<div className=' overflow-hidden bg-border/20'>
 												<img src={imgUrl(it.image, 1800)} alt={it.image?.alt || ''} className='w-full h-auto object-cover' loading='lazy' decoding='async' />
 											</div>
 
@@ -153,7 +153,7 @@ export function Projects() {
 										className='mb-10 break-inside-avoid'
 									>
 										<Link to={href} className='group block'>
-											<div className='rounded-[1rem] overflow-hidden bg-border/20'>
+											<div className='overflow-hidden bg-border/20'>
 												<img
 													src={imgUrl(it.cover, 2000)}
 													alt={it.cover?.alt || it.title || ''}

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 export function Tile({ to, image, label, className = '' }) {
 	return (
 		<Link to={to} className={`group block ${className}`} aria-label={label}>
-			<div className='relative overflow-hidden rounded-[1rem]'>
+			<div className='relative overflow-hidden '>
 				<img
 					src={image}
 					alt=''

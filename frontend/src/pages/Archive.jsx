@@ -80,7 +80,7 @@ export function Archive() {
 				<div className='columns-1 md:columns-2 lg:columns-3 [column-gap:2rem]'>
 					{Array.from({ length: 9 }).map((_, i) => (
 						<div key={i} className='mb-10 break-inside-avoid'>
-							<div className='bg-border/30 rounded-[1rem] h-[280px]' />
+							<div className='bg-border/30  h-[280px]' />
 							<div className='mt-3 h-4 w-40 bg-border/30 rounded' />
 						</div>
 					))}
@@ -89,7 +89,7 @@ export function Archive() {
 				<>
 					{/* ===== GRID VIEW ===== */}
 					{view === 'grid' ? (
-						<motion.div className='columns-1 md:columns-2 lg:columns-4 [column-gap:2rem]'>
+						<motion.div className='columns-1 md:columns-2 lg:columns-4 [column-gap:3rem]'>
 							<AnimatePresence initial={false}>
 								{items.map(it => (
 									<motion.div
@@ -102,7 +102,7 @@ export function Archive() {
 									>
 										{it.href ? (
 											<Link to={it.href} className='group block'>
-												<div className='rounded-[1rem] overflow-hidden bg-border/20'>
+												<div className=' overflow-hidden bg-border/20'>
 													<img
 														src={imgUrl(it.thumb, 2000)}
 														alt={it.thumb?.alt || it.title || ''}
@@ -113,7 +113,7 @@ export function Archive() {
 												</div>
 											</Link>
 										) : (
-											<div className='rounded-[1rem] overflow-hidden bg-border/20'>
+											<div className='overflow-hidden bg-border/20'>
 												<img src={imgUrl(it.thumb, 2000)} alt={it.thumb?.alt || ''} className='w-full h-auto object-cover' loading='lazy' decoding='async' />
 											</div>
 										)}
@@ -134,7 +134,7 @@ export function Archive() {
 											animate={{ opacity: 1, y: 0, scale: 1 }}
 											exit={{ opacity: 0, y: -8, scale: 0.98 }}
 											transition={{ duration: 0.18, ease: 'easeOut' }}
-											className='rounded-[1rem] overflow-hidden bg-border '
+											className=' overflow-hidden bg-border '
 										>
 											<img src={imgUrl(activeItem.thumb, 1200)} alt='' className='w-full h-auto object-cover' loading='lazy' decoding='async' />
 										</motion.div>

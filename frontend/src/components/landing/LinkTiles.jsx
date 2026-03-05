@@ -90,28 +90,28 @@ return (
 		<div className='grid grid-cols-1 md:grid-cols-12 gap-y-16 md:gap-y-12 '>
 			{/* 1) LEFT / upper */}
 			{architecture && (
-				<div className='md:col-start-3 md:col-span-7 md:row-start-1'>
+				<div className='md:col-start-2 md:col-span-5 md:row-start-1'>
 					<Tile to={ROUTE_BY_KEY.architecture} image={img(architecture, 1600)} label={architecture.title || LABEL_BY_KEY.architecture} />
 				</div>
 			)}
 
 			{/* 2) RIGHT / top */}
 			{product && (
-				<div className='md:col-start-7 md:col-span-6 md:row-start-2'>
+				<div className='md:col-start-8 md:col-span-4 md:row-start-2'>
 					<Tile to={ROUTE_BY_KEY.product} image={img(product, 1600)} label={product.title || LABEL_BY_KEY.product} />
 				</div>
 			)}
 
 			{/* 3) CENTER-RIGHT / middle */}
 			{exhibition && (
-				<div className='md:col-start-1 md:col-span-7 md:row-start-3'>
+				<div className='md:col-start-1 md:col-span-5 md:row-start-3'>
 					<Tile to={ROUTE_BY_KEY.exhibition} image={img(exhibition, 1600)} label={exhibition.title || LABEL_BY_KEY.exhibition} />
 				</div>
 			)}
 
 			{/* 4) CENTER-LEFT / bottom */}
 			{ambient && (
-				<div className='md:col-start-4 md:col-span-6 md:row-start-4'>
+				<div className='md:col-start-8 md:col-span-4 md:row-start-4'>
 					<Tile to={ROUTE_BY_KEY.ambient} image={img(ambient, 1600)} label={ambient.title || LABEL_BY_KEY.ambient} />
 				</div>
 			)}

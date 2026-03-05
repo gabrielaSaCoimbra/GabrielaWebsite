@@ -4,7 +4,7 @@ export function HeroGallery() {
 	return (
 		<section className='w-full'>
 			<div className='relative w-full min-h-[80svh]'>
-				<img src={hero1} alt='' className='absolute inset-0 h-full w-full object-cover rounded-b-[1rem]' loading='eager' decoding='async' />
+				<img src={hero1} alt='' className='absolute inset-0 h-full w-full object-cover ' loading='eager' decoding='async' />
 			</div>
 		</section>
 	);

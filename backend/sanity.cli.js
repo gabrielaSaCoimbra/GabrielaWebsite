@@ -5,7 +5,6 @@ export default defineCliConfig({
     projectId: '3imu19ps',
     dataset: 'production',
   },
-  deployment: {
-    autoUpdates: true,
-  },
+  studioHost: 'gabrielacoimbra',
+  deployment: {autoUpdates: true},
 })
