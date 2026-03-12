@@ -6,8 +6,8 @@ import { PortableText } from '@portabletext/react';
 const CATEGORY_LABEL = {
 	architecture: 'Architecture',
 	product: 'Product',
-	exhibition: 'Exhibitions',
-	ambient: 'Ambient',
+	exhibition: 'Artistic collaborations',
+	ambient: 'Spatial studies', 
 };
 
 

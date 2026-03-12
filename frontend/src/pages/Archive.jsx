@@ -12,8 +12,8 @@ function imgUrl(image, width) {
 const CATEGORY_LABEL = {
 	architecture: 'Architecture',
 	product: 'Product',
-	exhibition: 'Exhibitions',
-	ambient: 'Ambient',
+	exhibition: 'Artistic collaborations',
+	ambient: 'Spatial studies',
 };
 
 function ViewButton({ active, children, onClick }) {
@@ -27,20 +27,19 @@ function ViewButton({ active, children, onClick }) {
 export function Archive() {
 	const { data, loading } = useArchiveIndex();
 
-	// default = grid
-	const [view, setView] = useState('grid'); // 'grid' | 'list'
+	const [view, setView] = useState('grid'); // default = grid
 	const [activeId, setActiveId] = useState(null);
 
 	const items = useMemo(() => {
 		const ambientItems = (data.ambient || []).map(a => ({
 			kind: 'ambient',
 			id: a._id,
-			title: a.title || '', // opcional
+			title: a.title || '',
 			year: a.year || null,
 			category: 'ambient',
-			tag: a.tag || 'Ambient',
+			tag: 'Spatial studies', // <- label novo
 			thumb: a.image,
-			href: null, // sem link
+			href: null,
 		}));
 
 		const projectItems = (data.projects || []).map(p => ({
@@ -49,12 +48,11 @@ export function Archive() {
 			title: p.title || '',
 			year: p.year || null,
 			category: p.category,
-			tag: p.tag || CATEGORY_LABEL[p.category] || p.category,
+			tag: p.category === 'exhibition' ? 'Artistic collaborations' : p.tag || CATEGORY_LABEL[p.category] || p.category,
 			thumb: p.cover,
 			href: p.slug?.current ? `/projects/${p.slug.current}` : null,
 		}));
 
-		// ordem: ano desc, depois createdAt já vem do query. Aqui só juntamos.
 		return [...projectItems, ...ambientItems];
 	}, [data]);
 
@@ -62,7 +60,6 @@ export function Archive() {
 
 	return (
 		<div className='container-page pt-[25vh] pb-[8rem] pr-[7rem] pl-[7rem]'>
-			<div className='text-lead font-[600] pb-[3rem]'>Archive</div>
 
 			{/* Toggle bottom */}
 			<aside className='fixed bottom-[2rem] left-1/2 -translate-x-1/2 z-20'>
@@ -80,7 +77,7 @@ export function Archive() {
 				<div className='columns-1 md:columns-2 lg:columns-3 [column-gap:2rem]'>
 					{Array.from({ length: 9 }).map((_, i) => (
 						<div key={i} className='mb-10 break-inside-avoid'>
-							<div className='bg-border/30  h-[280px]' />
+							<div className='bg-border/30 h-[280px]' />
 							<div className='mt-3 h-4 w-40 bg-border/30 rounded' />
 						</div>
 					))}
@@ -102,7 +99,7 @@ export function Archive() {
 									>
 										{it.href ? (
 											<Link to={it.href} className='group block'>
-												<div className=' overflow-hidden bg-border/20'>
+												<div className='overflow-hidden bg-border/20'>
 													<img
 														src={imgUrl(it.thumb, 2000)}
 														alt={it.thumb?.alt || it.title || ''}
@@ -114,7 +111,7 @@ export function Archive() {
 											</Link>
 										) : (
 											<div className='overflow-hidden bg-border/20'>
-												<img src={imgUrl(it.thumb, 2000)} alt={it.thumb?.alt || ''} className='w-full h-auto object-cover' loading='lazy' decoding='async' />
+												<img src={imgUrl(it.thumb, 2000)} alt={it.thumb?.alt || it.title || ''} className='w-full h-auto object-cover' loading='lazy' decoding='async' />
 											</div>
 										)}
 									</motion.div>
@@ -134,7 +131,7 @@ export function Archive() {
 											animate={{ opacity: 1, y: 0, scale: 1 }}
 											exit={{ opacity: 0, y: -8, scale: 0.98 }}
 											transition={{ duration: 0.18, ease: 'easeOut' }}
-											className=' overflow-hidden bg-border '
+											className='overflow-hidden bg-border'
 										>
 											<img src={imgUrl(activeItem.thumb, 1200)} alt='' className='w-full h-auto object-cover' loading='lazy' decoding='async' />
 										</motion.div>
@@ -142,10 +139,9 @@ export function Archive() {
 								</AnimatePresence>
 							</div>
 
-							<div className='border-t  border-black ' />
+							<div className='border-t border-black' />
 
-							{/* Rows */}
-							<div className='divide-y   divide-black  '>
+							<div className='divide-y divide-black'>
 								{items.map(it => {
 									const isActive = activeId === it.id;
 
@@ -157,16 +153,10 @@ export function Archive() {
 											animate={{ x: isActive ? 10 : 0 }}
 											transition={{ duration: 0.18, ease: 'easeOut' }}
 										>
-											{/* Title */}
-											<div className='col-span-7 text-nav font-[600] '>{it.title || ''}</div>
-
-											{/* Category tag */}
-											<div className='col-span-2 text-navLight opacity-80 '>{it.tag || CATEGORY_LABEL[it.category] || it.category}</div>
-
-											{/* Year (blank allowed) */}
+											<div className='col-span-7 text-nav font-[600]'>{it.title || ''}</div>
+											<div className='col-span-2 text-navLight opacity-80'>{it.tag}</div>
 											<div className='col-span-3 text-navLight opacity-80 text-right'>{it.year ? it.year : ''}</div>
 
-											{/* Mobile preview (só quando active) */}
 											<div className='col-span-12 lg:hidden pt-4'>
 												<AnimatePresence>
 													{isActive ? (
@@ -175,7 +165,7 @@ export function Archive() {
 															animate={{ opacity: 1, height: 'auto' }}
 															exit={{ opacity: 0, height: 0 }}
 															transition={{ duration: 0.18, ease: 'easeOut' }}
-															className='rounded-[1rem] overflow-hidden '
+															className='rounded-[1rem] overflow-hidden'
 														>
 															<img src={imgUrl(it.thumb, 1400)} alt='' className='w-full h-auto object-cover' />
 														</motion.div>
@@ -185,7 +175,6 @@ export function Archive() {
 										</motion.div>
 									);
 
-									// Projects têm link, ambient não
 									return it.href ? (
 										<Link key={it.id} to={it.href} className='block'>
 											{RowInner}
@@ -196,9 +185,7 @@ export function Archive() {
 								})}
 							</div>
 
-							<div className='border-t  border-black ' />
-
-							{/* espaço para não ficar tapado pelo preview fixo */}
+							<div className='border-t border-black' />
 							<div className='hidden lg:block h-10' />
 						</div>
 					)}

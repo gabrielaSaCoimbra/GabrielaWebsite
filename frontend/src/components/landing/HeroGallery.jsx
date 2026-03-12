@@ -1,4 +1,4 @@
-import hero1 from '../../../public/Sala_1.jpg';
+import hero1 from '../../../public/HP_Hero2.jpg';
 
 export function HeroGallery() {
 	return (

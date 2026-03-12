@@ -5,19 +5,26 @@ import { urlFor } from '../../lib/sanity.image.js';
 import { Tile } from './Tile.jsx';
 
 const ROUTE_BY_KEY = {
-	ambient: '/projects?cat=ambient',
+	ambient: '/projects?cat=spatial-studies',
 	architecture: '/projects?cat=architecture',
 	product: '/projects?cat=product',
-	exhibition: '/projects?cat=exhibition',
+	exhibition: '/projects?cat=artistic-collaborations',
 };
 
-// label fallback por key
+// fallback labels (UI)
 const LABEL_BY_KEY = {
-	ambient: 'Ambient',
+	ambient: 'Spatial studies',
 	architecture: 'Architecture',
 	product: 'Product',
-	exhibition: 'Exhibitions',
+	exhibition: 'Artistic collaborations',
 };
+
+// força label por key (mesmo que o Sanity tenha title antigo)
+function uiLabel(key, sanityTitle) {
+	if (key === 'ambient') return 'Spatial studies';
+	if (key === 'exhibition') return 'Artistic collaborations';
+	return sanityTitle || LABEL_BY_KEY[key] || key;
+}
 
 export function LinkTiles() {
 	const [tiles, setTiles] = useState([]);
@@ -30,7 +37,6 @@ export function LinkTiles() {
 			try {
 				const data = await sanityClient.fetch(WORKS_OVERVIEW_QUERY);
 				const list = (data?.tiles || []).filter(t => t?.enabled !== false);
-
 				if (alive) setTiles(list);
 			} catch (err) {
 				console.error('Failed to fetch worksOverview tiles', err);
@@ -44,14 +50,12 @@ export function LinkTiles() {
 		};
 	}, []);
 
-	// helper para encontrar tile por key
 	const byKey = useMemo(() => {
 		const map = new Map();
 		tiles.forEach(t => map.set(t.key, t));
 		return map;
 	}, [tiles]);
 
-	// opcional: skeleton simples
 	if (loading) {
 		return (
 			<section className='pt-24'>
@@ -73,51 +77,47 @@ export function LinkTiles() {
 		);
 	}
 
-	// pega em cada secção pelo key (para manter posições fixas)
 	const ambient = byKey.get('ambient');
 	const architecture = byKey.get('architecture');
 	const product = byKey.get('product');
 	const exhibition = byKey.get('exhibition');
 
-	// helper para gerar URL leve
 	const img = (tile, width) => {
 		if (!tile?.image) return '';
 		return urlFor(tile.image).width(width).quality(70).auto('format').url();
 	};
 
-return (
-	<section className=' px-[7rem] pb-[6rem] '>
-		<div className='grid grid-cols-1 md:grid-cols-12 gap-y-16 md:gap-y-12 '>
-			{/* 1) LEFT / upper */}
-			{architecture && (
-				<div className='md:col-start-2 md:col-span-5 md:row-start-1'>
-					<Tile to={ROUTE_BY_KEY.architecture} image={img(architecture, 1600)} label={architecture.title || LABEL_BY_KEY.architecture} />
-				</div>
-			)}
+	return (
+		<section className='px-[7rem] pb-[6rem]'>
+			<div className='grid grid-cols-1 md:grid-cols-12 gap-y-16 md:gap-y-12'>
+				{/* 1) LEFT / upper */}
+				{architecture && (
+					<div className='md:col-start-2 md:col-span-5 md:row-start-1'>
+						<Tile to={ROUTE_BY_KEY.architecture} image={img(architecture, 1600)} label={uiLabel('architecture', architecture.title)} />
+					</div>
+				)}
 
-			{/* 2) RIGHT / top */}
-			{product && (
-				<div className='md:col-start-8 md:col-span-4 md:row-start-2'>
-					<Tile to={ROUTE_BY_KEY.product} image={img(product, 1600)} label={product.title || LABEL_BY_KEY.product} />
-				</div>
-			)}
+				{/* 2) RIGHT / top */}
+				{product && (
+					<div className='md:col-start-8 md:col-span-4 md:row-start-2'>
+						<Tile to={ROUTE_BY_KEY.product} image={img(product, 1600)} label={uiLabel('product', product.title)} />
+					</div>
+				)}
 
-			{/* 3) CENTER-RIGHT / middle */}
-			{exhibition && (
-				<div className='md:col-start-1 md:col-span-5 md:row-start-3'>
-					<Tile to={ROUTE_BY_KEY.exhibition} image={img(exhibition, 1600)} label={exhibition.title || LABEL_BY_KEY.exhibition} />
-				</div>
-			)}
+				{/* 3) CENTER-RIGHT / middle */}
+				{exhibition && (
+					<div className='md:col-start-1 md:col-span-5 md:row-start-3'>
+						<Tile to={ROUTE_BY_KEY.exhibition} image={img(exhibition, 1600)} label={uiLabel('exhibition', exhibition.title)} />
+					</div>
+				)}
 
-			{/* 4) CENTER-LEFT / bottom */}
-			{ambient && (
-				<div className='md:col-start-8 md:col-span-4 md:row-start-4'>
-					<Tile to={ROUTE_BY_KEY.ambient} image={img(ambient, 1600)} label={ambient.title || LABEL_BY_KEY.ambient} />
-				</div>
-			)}
-		</div>
-	</section>
-);
-
-
+				{/* 4) CENTER-LEFT / bottom */}
+				{ambient && (
+					<div className='md:col-start-8 md:col-span-4 md:row-start-4'>
+						<Tile to={ROUTE_BY_KEY.ambient} image={img(ambient, 1600)} label={uiLabel('ambient', ambient.title)} />
+					</div>
+				)}
+			</div>
+		</section>
+	);
 }

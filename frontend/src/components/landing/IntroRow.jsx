@@ -7,7 +7,7 @@ export  function IntroRow() {
 				</div>
 
 				<div className='md:col-span-9 '>
-					<p className='text-lead text-fg/90 font-[600] '>I’m Gabriela, a 3D artist passionate about bringing spaces and ideas to life through digital visualization.</p>
+					<p className='text-lead text-fg/90 font-[600] '>I'm Gabriela, a 3D artist and spatial designer working across architecture, objects, and speculative spaces.</p>
 				</div>
 			</div>
 		</section>
