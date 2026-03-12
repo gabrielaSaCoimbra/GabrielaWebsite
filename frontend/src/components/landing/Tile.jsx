@@ -18,11 +18,10 @@ export function Tile({ to, image, label, className = '' }) {
 
 				<div className='absolute inset-0 grid place-items-center pointer-events-none'>
 					<span
-						className='
-							px-8 py-3 
+						className=' w-full text-center
+							px-8 py-3 uppercase
 							bg-[rgba(160, 160, 160, 0.4)] 
 							backdrop-blur-2xl
-							shadow-[0_12px_40px_rgba(0,0,0,0.15)]
 							text-[#f8f5f1] font-semibold text-nav
 							opacity-0 translate-y-[6px]
 							transition-[opacity,transform] duration-[900ms]
