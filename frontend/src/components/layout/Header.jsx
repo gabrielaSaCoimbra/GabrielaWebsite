@@ -9,8 +9,11 @@ const navItems = [
 
 export function Header() {
 	return (
-		<header className='fixed inset-x-0 top-0 z-50 text-white mix-blend-exclusion'>
-			<div className='container-page  px-[7rem] py-[2rem] flex items-center justify-between  '>
+		<header className='fixed inset-x-0 top-0 z-50 '>
+			<div
+				className='container-page  mx-[7rem] my-[2rem] p-2 flex items-center justify-between bg-[rgba(160, 160, 160, 0.4)] 
+							backdrop-blur-2xl text-black '
+			>
 				<NavLink to='/' className='text-nav hover:text-fg transition uppercase'>
 					Gabriela Sá Coimbra
 				</NavLink>
