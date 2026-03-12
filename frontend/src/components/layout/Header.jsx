@@ -11,11 +11,11 @@ export function Header() {
 	return (
 		<header className='fixed inset-x-0 top-0 z-50 text-black'>
 			<div className='container-page  px-[7rem] py-[2rem] flex items-center justify-between  '>
-				<NavLink to='/' className='text-nav hover:text-fg transition '>
+				<NavLink to='/' className='text-nav hover:text-fg transition uppercase'>
 					Gabriela Sá Coimbra
 				</NavLink>
 
-				<nav className='flex items-center gap-6 text-nav'>
+				<nav className='flex items-center gap-6 text-nav uppercase'>
 					{navItems.map(item => (
 						<NavLink key={item.to} to={item.to} className={({ isActive }) => (isActive ? '' : '')}>
 							{item.label}
