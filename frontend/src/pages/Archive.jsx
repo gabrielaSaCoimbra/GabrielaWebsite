@@ -3,6 +3,9 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useArchiveIndex } from '../hooks/useArchiveIndex';
 import { urlFor } from '../lib/sanity.image';
+import GridViewIcon3 from '../components/Icons/GridViewIcon3';
+import GridViewIcon4 from '../components/Icons/GridViewIcon4';
+import ListViewIcon from '../components/Icons/ListViewIcon';
 
 function imgUrl(image, width) {
 	if (!image) return '';
@@ -16,9 +19,17 @@ const CATEGORY_LABEL = {
 	ambient: 'Spatial studies',
 };
 
-function ViewButton({ active, children, onClick }) {
+function ViewButton({ active, children, onClick, label }) {
 	return (
-		<button type='button' onClick={onClick} className={['glass-pill__item', active ? 'is-active' : ''].join(' ')} aria-current={active ? 'page' : undefined} disabled={active}>
+		<button
+			type='button'
+			onClick={onClick}
+			aria-label={label}
+			className={['bg-[rgba(0,0,0,0.04)] backdrop-blur-[50px] px-4 py-3 text-nav transition duration-500', active ? 'text-black' : 'text-black/60 hover:text-black hover:bg-[rgba(0,0,0,0.1)]'].join(
+				' ',
+			)}
+			disabled={active}
+		>
 			{children}
 		</button>
 	);
@@ -27,7 +38,7 @@ function ViewButton({ active, children, onClick }) {
 export function Archive() {
 	const { data, loading } = useArchiveIndex();
 
-	const [view, setView] = useState('grid'); // default = grid
+	const [view, setView] = useState('grid3'); 
 	const [activeId, setActiveId] = useState(null);
 
 	const items = useMemo(() => {
@@ -37,7 +48,7 @@ export function Archive() {
 			title: a.title || '',
 			year: a.year || null,
 			category: 'ambient',
-			tag: 'Spatial studies', // <- label novo
+			tag: 'Spatial studies',
 			thumb: a.image,
 			href: null,
 		}));
@@ -58,17 +69,24 @@ export function Archive() {
 
 	const activeItem = useMemo(() => items.find(i => i.id === activeId) || null, [items, activeId]);
 
-	return (
-		<div className='container-page pt-[25vh] pb-[8rem] pr-[7rem] pl-[7rem]'>
+	// classes do grid conforme o toggle
+	const gridColsClass = view === 'grid3' ? 'columns-1 md:columns-2 lg:columns-3 [column-gap:3rem]' : 'columns-1 md:columns-2 lg:columns-4 [column-gap:3rem]';
 
+	return (
+		<div className='pt-[17vh] pb-[8rem] pr-[7rem] pl-[7rem]'>
 			{/* Toggle bottom */}
-			<aside className='fixed bottom-[2rem] left-1/2 -translate-x-1/2 z-20'>
-				<div className='glass-pill'>
-					<ViewButton active={view === 'grid'} onClick={() => setView('grid')}>
-						Grid
+			<aside className='fixed bottom-6 left-1/2 -translate-x-1/2 z-20'>
+				<div className='flex gap-2'>
+					<ViewButton label='Grid 3 columns' active={view === 'grid3'} onClick={() => setView('grid3')}>
+						<GridViewIcon3 size={22} color='currentColor' />
 					</ViewButton>
-					<ViewButton active={view === 'list'} onClick={() => setView('list')}>
-						List
+
+					<ViewButton label='Grid 4 columns' active={view === 'grid4'} onClick={() => setView('grid4')}>
+						<GridViewIcon4 size={22} color='currentColor' />
+					</ViewButton>
+
+					<ViewButton label='List view' active={view === 'list'} onClick={() => setView('list')}>
+						<ListViewIcon size={22} color='currentColor' />
 					</ViewButton>
 				</div>
 			</aside>
@@ -84,9 +102,9 @@ export function Archive() {
 				</div>
 			) : (
 				<>
-					{/* ===== GRID VIEW ===== */}
-					{view === 'grid' ? (
-						<motion.div className='columns-1 md:columns-2 lg:columns-4 [column-gap:3rem]'>
+					{/* ===== GRID VIEW (3 ou 4 colunas) ===== */}
+					{view !== 'list' ? (
+						<motion.div className={gridColsClass}>
 							<AnimatePresence initial={false}>
 								{items.map(it => (
 									<motion.div
@@ -103,7 +121,7 @@ export function Archive() {
 													<img
 														src={imgUrl(it.thumb, 2000)}
 														alt={it.thumb?.alt || it.title || ''}
-														className='w-full h-auto object-cover transition-transform duration-500 group-hover:scale-[1.01]'
+														className='w-full h-auto object-cover transition-transform duration-[900ms] group-hover:scale-[1.02]'
 														loading='lazy'
 														decoding='async'
 													/>
@@ -121,7 +139,6 @@ export function Archive() {
 					) : (
 						/* ===== LIST VIEW ===== */
 						<div className='relative'>
-							{/* Preview fixo (desktop) */}
 							<div className='hidden lg:block fixed right-[7rem] top-[30vh] z-10 w-[380px] pointer-events-none'>
 								<AnimatePresence mode='wait'>
 									{activeItem?.thumb ? (
@@ -194,3 +211,5 @@ export function Archive() {
 		</div>
 	);
 }
+
+

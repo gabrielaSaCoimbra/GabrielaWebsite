@@ -30,64 +30,6 @@ body {
 }
 
 
-
-
-
-.glass-pill {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.5rem;
-  padding: 0.75rem 2rem;
-  background: rgba(128, 128, 128, 0.50);
-  backdrop-filter: blur(30px) saturate(140%);
-  -webkit-backdrop-filter: blur(30px) saturate(140%);
-  box-shadow: 0 0.6rem 3rem rgba(0, 0, 0, 0.13);
-}
-
-
-
-
-
-.glass-pill__item {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  flex-shrink: 0;
-
-  font-size: 1.1rem;
-  font-weight: 600;
-  letter-spacing: -0.05em;
-
-  color: rgba(255,255,255,0.8);
-  opacity: 0.80;
-  mix-blend-mode: lighten;
-
-  background: transparent;
-  border: 0;
-  padding: 0;
-
-  transition: opacity .45s cubic-bezier(.55, 0, .1, 1);
-}
-
-.glass-pill__item:hover {
-  opacity: 1;
-}
-
-.glass-pill__item.is-active {
-  opacity: 1;
-  pointer-events: none;
-}
-
-
-@media (prefers-color-scheme: light) {
-  .glass-pill {
-    background: rgba(160, 160, 160, 0.4);
-  }
-}
-
 .marquee {
 	--gap: 5rem;
 	--card-w: clamp(260px, 26vw, 520px);
@@ -125,7 +67,6 @@ body {
 }
 
 .marquee__card {
-	border-radius: var(--card-r);
 	overflow: hidden;
 }
 

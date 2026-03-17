@@ -9,20 +9,17 @@ export function Tile({ to, image, label, className = '' }) {
 					alt=''
 					className='
 						w-full h-auto object-cover
-						transition-transform duration-[900ms]
-						ease-[cubic-bezier(.22,1,.36,1)]
+						transition-transform duration-[900ms]	
 						group-hover:scale-[1.02]'
 				/>
 
-				<div className='absolute inset-0 bg-black/0 transition-colors duration-[900ms] ease-[cubic-bezier(.22,1,.36,1)] group-hover:bg-black/10' />
+				<div className='absolute inset-0 bg-black/0 transition-colors duration-[900ms] ease-[cubic-bezier(.22,1,.36,1)] group-hover:bg-black/5' />
 
 				<div className='absolute inset-0 grid place-items-center pointer-events-none'>
 					<span
-						className=' w-full text-center
-							py-2 uppercase
-							bg-[rgba(160, 160, 160, 0.4)] 
-							backdrop-blur-2xl
-							text-[#f8f5f1] font-semibold text-nav
+						className=' text-center
+							bg-[rgba(0,0,0,0.04)] backdrop-blur-[50px] px-4 py-3 text-nav
+							text-black/80  
 							opacity-0 translate-y-[6px]
 							transition-[opacity,transform] duration-[900ms]
 							ease-[cubic-bezier(.22,1,.36,1)]

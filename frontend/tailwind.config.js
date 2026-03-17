@@ -27,9 +27,9 @@ export default {
 			},
 			fontSize: {
 				h1: ['clamp(2.25rem, 1.5vw, 4rem)', { lineHeight: '1'}],
-				lead: ['clamp(1.25rem, 4.2vw, 4rem)', { lineHeight: '1', letterSpacing: '0em' }],
+				lead: ['clamp(1.25rem, 4vw, 3rem)', { lineHeight: '1', letterSpacing: '0em' }],
 				lead2: ['clamp(1.25rem, 4.5vw, 4.5rem)', { lineHeight: '1'}],
-				nav: ['1.1rem', { lineHeight: '1.2', fontWeight: '600'}],
+				nav: ['1rem', { lineHeight: '1.2', fontWeight: '600'}],
 				navLight: ['1.1rem', { lineHeight: '1.2', fontWeight: '400', letterSpacing: '-0.05em' }],
 				label: ['0.7rem', { lineHeight: '1.2', letterSpacing: '0.08em' }],
 			},

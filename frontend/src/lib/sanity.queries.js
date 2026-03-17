@@ -167,3 +167,26 @@ export const ARCHIVE_INDEX_QUERY = `
     }
 }
 `;
+
+export const MORE_WORK_SAME_CATEGORY_QUERY = `
+*[_type == "project"
+  && featured == true
+  && category == $category
+  && slug.current != $slug
+]
+| order(coalesce(year,0) desc, _createdAt desc)[0...4]{
+  _id,
+  title,
+  slug,
+  category,
+  year,
+  "cover": images[0]{
+    alt,
+    asset->{
+      _id,
+      url,
+      metadata{dimensions{width,height,aspectRatio}}
+    }
+  }
+}
+`;

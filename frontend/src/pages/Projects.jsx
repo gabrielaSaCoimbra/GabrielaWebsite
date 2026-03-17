@@ -44,7 +44,15 @@ const FILTER_TO_PROJECT_CATEGORY = {
 
 function FilterButton({ active, children, onClick }) {
 	return (
-		<button type='button' onClick={onClick} className={['glass-pill__item', active ? 'is-active' : ''].join(' ')} aria-current={active ? 'page' : undefined} disabled={active}>
+		<button
+			type='button'
+			onClick={onClick}
+			className={[
+				'bg-[rgba(0,0,0,0.04)]  backdrop-blur-[50px] px-4 py-3 text-nav transition duration-500',
+				active ? 'text-black bg-[rgba(0,0,0,0.1)]' : 'text-black/60 hover:text-black hover:bg-[rgba(0,0,0,0.1)]',
+			].join(' ')}
+			disabled={active}
+		>
 			{children}
 		</button>
 	);
@@ -109,18 +117,25 @@ export function Projects() {
 	}, [data, filter]);
 
 	return (
-		<div className='container-page pt-[25vh] pb-[7rem] pr-[7rem] pl-[7rem]'>
+		<div className='pt-[17vh] pb-[7rem] pr-[7rem] pl-[7rem]'>
 			{/* Heading + description */}
-			<div className='pb-[3rem]'>
-				<div className='text-lead font-[600]'>{heading}</div>
+			<div className='mb-[3.5rem] flex flex-col gap-4 justify-center items-center'>
+				<div className='text-lead font-[600] text-black/80'>{heading}</div>
 
-				{description ? <div className='mt-4 max-w-[80ch] text-sm opacity-60'>{description}</div> : null}
+				{description ? <div className=' max-w-[80ch] text-sm '>{description}</div> : null}
+
+				{/* <div className='flex gap-2 pt-3'>
+					{FILTERS.map(f => (
+						<FilterButton key={f.key} active={filter === f.key} onClick={() => setFilter(f.key)}>
+							{f.label}
+						</FilterButton>
+					))}
+				</div> */}
 			</div>
 
 			<div className='relative'>
-				{/* Filters (desktop) */}
-				<aside className='hidden md:block fixed bottom-[2rem] left-1/2 -translate-x-1/2 z-20'>
-					<div className='glass-pill'>
+				<aside className='hidden md:block fixed bottom-6 left-1/2 -translate-x-1/2 z-20'>
+					<div className='flex gap-2'>
 						{FILTERS.map(f => (
 							<FilterButton key={f.key} active={filter === f.key} onClick={() => setFilter(f.key)}>
 								{f.label}
@@ -129,16 +144,14 @@ export function Projects() {
 					</div>
 				</aside>
 
-				{/* Filters (mobile) */}
-				<div className='md:hidden mb-6 flex gap-4 overflow-x-auto'>
+				<div className='md:hidden mb-8 flex gap-4 overflow-x-auto'>
 					{FILTERS.map(f => (
-						<button key={f.key} type='button' onClick={() => setFilter(f.key)} className={['whitespace-nowrap text-sm transition-opacity', filter === f.key ? 'opacity-100' : 'opacity-60'].join(' ')}>
+						<button key={f.key} type='button' onClick={() => setFilter(f.key)} className={['whitespace-nowrap text-sm transition-opacity', filter === f.key ? 'opacity-100' : 'opacity-10'].join(' ')}>
 							{f.label}
 						</button>
 					))}
 				</div>
 
-				{/* Content */}
 				{loading ? (
 					<div className='columns-1 md:columns-2 lg:columns-3 [column-gap:2rem]'>
 						{Array.from({ length: 9 }).map((_, i) => (
@@ -169,9 +182,9 @@ export function Projects() {
 												<img src={imgUrl(it.image, 1800)} alt={it.image?.alt || it.title || ''} className='w-full h-auto object-cover' loading='lazy' decoding='async' />
 											</div>
 
-											{it.title ? <div className='mt-4 text-nav opacity-90 font-[600]'>{it.title}</div> : null}
+											{it.title ? <div className='mt-4 text-nav  font-[600]'>{it.title}</div> : null}
 
-											<div className={it.title ? 'mt-1 text-sm opacity-60' : 'mt-4 text-sm opacity-60'}>{it.tag}</div>
+											<div className={it.title ? 'mt-1 text-sm ' : 'mt-4 text-sm '}>{it.tag}</div>
 										</motion.div>
 									);
 								}
@@ -189,18 +202,18 @@ export function Projects() {
 										className='mb-10 break-inside-avoid'
 									>
 										<Link to={href} className='group block'>
-											<div className='overflow-hidden bg-border/20'>
+											<div className='overflow-hidden '>
 												<img
 													src={imgUrl(it.cover, 2000)}
 													alt={it.cover?.alt || it.title || ''}
-													className='w-full h-auto object-cover transition-transform duration-500 group-hover:scale-[1.01]'
+													className='w-full h-auto object-cover transition-transform duration-[900ms] group-hover:scale-[1.02]'
 													loading='lazy'
 													decoding='async'
 												/>
 											</div>
 
-											<div className='mt-4 text-nav opacity-90 font-[600]'>{it.title}</div>
-											<div className='mt-1 text-sm opacity-60'>{it.tag}</div>
+											<div className='mt-4 text-nav  font-[600]'>{it.title}</div>
+											<div className='mt-1 text-sm '>{it.tag}</div>
 										</Link>
 									</motion.div>
 								);

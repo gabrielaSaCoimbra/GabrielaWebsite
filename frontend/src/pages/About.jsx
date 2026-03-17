@@ -18,7 +18,7 @@ export function About() {
 	const loop = [...IMAGES, ...IMAGES];
 
 	return (
-		<div>
+		<div className='bg-[#f6ffcc]'>
 			<section className='px-[7rem] pt-[25vh] text-white flex items-center justify-center '>
 				<p className='text-lead text-fg/90 font-[600]'>
 					I'm a 3D artist passionate about bringing spaces and ideas to life through digital visualization. With a keen eye for detail and a deep understanding of lighting, materials and composition,
