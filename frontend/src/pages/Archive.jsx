@@ -62,6 +62,8 @@ export function Archive() {
 		return [...projectItems, ...ambientItems];
 	}, [data]);
 
+	const total = loading ? null : items.length;
+
 	const activeItem = useMemo(() => items.find(i => i.id === activeId) || null, [items, activeId]);
 
 	const gridColsClass = view === 'grid3' ? 'columns-1 md:columns-2 lg:columns-3 [column-gap:3rem]' : 'columns-1 md:columns-2 lg:columns-4 [column-gap:3rem]';
@@ -69,8 +71,10 @@ export function Archive() {
 	const gridSizes = view === 'grid4' ? '(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 25vw' : '(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw';
 
 	return (
-		<div className='pt-[17vh] pb-[8rem] pr-[7rem] pl-[7rem]'>
-			{/* Toggle bottom */}
+		<div className='pt-[20vh] pb-[8rem] pr-[7rem] pl-[7rem]'>
+			<div className='text-lead text-center font-[600] text-black/80 mb-[3.5rem]'>Archive {total !== null ? <span className='text-black/40'>{total}</span> : null}</div>
+
+
 			<aside className='fixed bottom-6 left-1/2 -translate-x-1/2 z-20'>
 				<div className='flex gap-2'>
 					<ViewButton label='Grid 3 columns' active={view === 'grid3'} onClick={() => setView('grid3')}>
@@ -87,6 +91,22 @@ export function Archive() {
 				</div>
 			</aside>
 
+			{/* <aside className='fixed bottom-6 left-1/2 -translate-x-1/2 z-20'>
+				<div className='flex gap-2'>
+					<ViewButton label='Grid 3 columns' active={view === 'grid3'} onClick={() => setView('grid3')}>
+						<GridViewIcon3 size={22} color='currentColor' />
+					</ViewButton>
+
+					<ViewButton label='Grid 4 columns' active={view === 'grid4'} onClick={() => setView('grid4')}>
+						<GridViewIcon4 size={22} color='currentColor' />
+					</ViewButton>
+
+					<ViewButton label='List view' active={view === 'list'} onClick={() => setView('list')}>
+						<ListViewIcon size={22} color='currentColor' />
+					</ViewButton>
+				</div>
+			</aside> */}
+
 			{loading ? (
 				<div className='columns-1 md:columns-2 lg:columns-3 [column-gap:3rem]'>
 					{[320, 420, 280, 380, 500, 340, 460, 300, 390].map((h, i) => (
@@ -99,7 +119,6 @@ export function Archive() {
 				</div>
 			) : (
 				<>
-					{/* ===== GRID VIEW (3 ou 4 colunas) ===== */}
 					{view !== 'list' ? (
 						<motion.div className={gridColsClass}>
 							<AnimatePresence initial={false}>
@@ -135,7 +154,6 @@ export function Archive() {
 							</AnimatePresence>
 						</motion.div>
 					) : (
-						/* ===== LIST VIEW ===== */
 						<div className='relative'>
 							<div className='hidden lg:block fixed right-[7rem] top-[30vh] z-10 w-[380px] pointer-events-none'>
 								<AnimatePresence mode='wait'>
@@ -180,7 +198,7 @@ export function Archive() {
 															animate={{ opacity: 1, height: 'auto' }}
 															exit={{ opacity: 0, height: 0 }}
 															transition={{ duration: 0.18, ease: 'easeOut' }}
-															className=' overflow-hidden'
+															className='overflow-hidden'
 														>
 															<SanityImage image={it.thumb} preset='small' alt='' className='w-full' imgClassName='w-full h-auto object-cover' sizes='100vw' />
 														</motion.div>

@@ -7,7 +7,7 @@ const navItems = [
 	{ to: '/projects', label: 'Projects' },
 	{ to: '/archive', label: 'Archive' },
 	{ to: '/about', label: 'About' },
-	{ to: '/terms', label: 'Contacts' },
+	{ to: '/contact', label: 'Contacts' },
 ];
 
 export function Header() {

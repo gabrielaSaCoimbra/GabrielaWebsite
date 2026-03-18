@@ -1,33 +1,40 @@
-import { useEffect, useRef } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import Lenis from 'lenis';
 
+const LenisContext = createContext(null);
+
 export function LenisProvider({ children }) {
-	const lenisRef = useRef(null);
 	const rafRef = useRef(null);
+	const [lenis, setLenis] = useState(null);
 
 	useEffect(() => {
-		const lenis = new Lenis({
+		const instance = new Lenis({
 			duration: 1.1,
 			smoothWheel: true,
-			smoothTouch: false, 
+			smoothTouch: false,
 			touchMultiplier: 1.5,
 			wheelMultiplier: 1,
 		});
 
-		lenisRef.current = lenis;
+		setLenis(instance);
 
 		const raf = time => {
-			lenis.raf(time);
+			instance.raf(time);
 			rafRef.current = requestAnimationFrame(raf);
 		};
+
 		rafRef.current = requestAnimationFrame(raf);
 
 		return () => {
 			if (rafRef.current) cancelAnimationFrame(rafRef.current);
-			lenis.destroy();
-			lenisRef.current = null;
+			instance.destroy();
+			setLenis(null);
 		};
 	}, []);
 
-	return children;
+	return <LenisContext.Provider value={lenis}>{children}</LenisContext.Provider>;
+}
+
+export function useLenis() {
+	return useContext(LenisContext);
 }

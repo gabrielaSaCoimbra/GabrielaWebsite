@@ -93,7 +93,7 @@ export function ProjectSlug() {
 	const isSingle = images.length <= 1;
 
 	return (
-		<div className='pt-[17vh] pb-[7rem] pr-[7rem] pl-[7rem]'>
+		<div className='pt-[20vh] pb-[7rem] pr-[7rem] pl-[7rem]'>
 			<div className='flex flex-col justify-center items-center'>
 				<h1 className='text-lead font-[600] max-w-[23ch] mb-6 text-center'>{data.title}</h1>
 

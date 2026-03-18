@@ -69,11 +69,9 @@ function normalizeCat(value) {
 export function Projects() {
 	const { data, loading } = useProjectsIndex();
 
-	// Lightbox (só ambient)
 	const [lbOpen, setLbOpen] = useState(false);
 	const [lbIndex, setLbIndex] = useState(0);
 
-	// URL filter
 	const [searchParams, setSearchParams] = useSearchParams();
 	const filter = normalizeCat(searchParams.get('cat') || 'all');
 
@@ -122,7 +120,7 @@ export function Projects() {
 		const projectItems = (data.projects || []).map(p => ({
 			kind: 'project',
 			id: p._id,
-			category: p.category, // architecture | product | exhibition
+			category: p.category,
 			title: p.title,
 			slug: p.slug?.current,
 			cover: p.cover,
@@ -137,17 +135,18 @@ export function Projects() {
 		return projectItems.filter(p => p.category === cat);
 	}, [data, filter]);
 
+	const total = loading ? null : items.length;
+
 	return (
-		<div className='pt-[17vh] pb-[7rem] pr-[7rem] pl-[7rem]'>
-			{/* Heading + description */}
+		<div className='pt-[20vh] pb-[7rem] pr-[7rem] pl-[7rem]'>
 			<div className='mb-[3.5rem] flex flex-col gap-4 justify-center items-center'>
-				<div className='text-lead font-[600] text-black/80'>{heading}</div>
+				<div className='text-lead font-[600] text-black/80'>
+					{heading} {total !== null ? <span className='text-black/40'>{total}</span> : null}
+				</div>
 
 				{description ? <div className='max-w-[80ch] text-sm'>{description}</div> : null}
-			</div>
 
-			<div className='relative'>
-				<aside className='hidden md:block fixed bottom-6 left-1/2 -translate-x-1/2 z-20'>
+				<div className='hidden md:block mt-6'>
 					<div className='flex gap-2'>
 						{FILTERS.map(f => (
 							<FilterButton key={f.key} active={filter === f.key} onClick={() => setFilter(f.key)}>
@@ -155,7 +154,19 @@ export function Projects() {
 							</FilterButton>
 						))}
 					</div>
-				</aside>
+				</div>
+			</div>
+
+			<div className='relative'>
+				{/* <aside className='hidden md:block fixed bottom-6 left-1/2 -translate-x-1/2 z-20'>
+					<div className='flex gap-2'>
+						{FILTERS.map(f => (
+							<FilterButton key={f.key} active={filter === f.key} onClick={() => setFilter(f.key)}>
+								{f.label}
+							</FilterButton>
+						))}
+					</div>
+				</aside> */}
 
 				<div className='md:hidden mb-8 flex gap-4 overflow-x-auto'>
 					{FILTERS.map(f => (
@@ -181,7 +192,6 @@ export function Projects() {
 							{items.map(it => {
 								const key = `${it.kind}-${it.id}`;
 
-								// Spatial studies (ambient) — abre lightbox
 								if (it.kind === 'ambient') {
 									return (
 										<motion.div
@@ -209,7 +219,6 @@ export function Projects() {
 									);
 								}
 
-								// Projects — link normal
 								const href = it.slug ? `/projects/${it.slug}` : '/projects';
 
 								return (
@@ -244,7 +253,6 @@ export function Projects() {
 				)}
 			</div>
 
-			{/* Lightbox (ambient only) */}
 			<Lightbox open={lbOpen} onClose={() => setLbOpen(false)} images={ambientLbImages} index={lbIndex} onPrev={prevAmbient} onNext={nextAmbient} />
 		</div>
 	);
