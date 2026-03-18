@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import sanityClient from '../../lib/sanity.client';
 import { WORKS_OVERVIEW_QUERY } from '../../lib/sanity.queries.js';
-import { urlFor } from '../../lib/sanity.image.js';
 import { Tile } from './Tile.jsx';
 
 const ROUTE_BY_KEY = {
@@ -82,10 +81,7 @@ export function LinkTiles() {
 	const product = byKey.get('product');
 	const exhibition = byKey.get('exhibition');
 
-	const img = (tile, width) => {
-		if (!tile?.image) return '';
-		return urlFor(tile.image).width(width).quality(70).auto('format').url();
-	};
+	
 
 	return (
 		<section className='px-[7rem] pb-[6rem]'>
@@ -93,28 +89,28 @@ export function LinkTiles() {
 				{/* 1) LEFT / upper */}
 				{architecture && (
 					<div className='md:col-start-2 md:col-span-5 md:row-start-1'>
-						<Tile to={ROUTE_BY_KEY.architecture} image={img(architecture, 1600)} label={uiLabel('architecture', architecture.title)} />
+						<Tile to={ROUTE_BY_KEY.architecture} imageData={architecture?.image} label={uiLabel('architecture', architecture.title)} loading='eager' />
 					</div>
 				)}
 
 				{/* 2) RIGHT / top */}
 				{product && (
 					<div className='md:col-start-8 md:col-span-4 md:row-start-2'>
-						<Tile to={ROUTE_BY_KEY.product} image={img(product, 1600)} label={uiLabel('product', product.title)} />
+						<Tile to={ROUTE_BY_KEY.product} imageData={product?.image} label={uiLabel('product', product.title)} loading='eager' />
 					</div>
 				)}
 
 				{/* 3) CENTER-RIGHT / middle */}
 				{exhibition && (
 					<div className='md:col-start-1 md:col-span-5 md:row-start-3'>
-						<Tile to={ROUTE_BY_KEY.exhibition} image={img(exhibition, 1600)} label={uiLabel('exhibition', exhibition.title)} />
+						<Tile to={ROUTE_BY_KEY.exhibition} imageData={exhibition?.image} label={uiLabel('exhibition', exhibition.title)} loading='lazy' />
 					</div>
 				)}
 
 				{/* 4) CENTER-LEFT / bottom */}
 				{ambient && (
 					<div className='md:col-start-8 md:col-span-4 md:row-start-4'>
-						<Tile to={ROUTE_BY_KEY.ambient} image={img(ambient, 1600)} label={uiLabel('ambient', ambient.title)} />
+						<Tile to={ROUTE_BY_KEY.ambient} imageData={ambient?.image} label={uiLabel('ambient', ambient.title)} loading='lazy' />
 					</div>
 				)}
 			</div>

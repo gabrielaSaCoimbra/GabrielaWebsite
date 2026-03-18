@@ -1,8 +1,11 @@
+import { useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useProjectBySlug } from '../hooks/useProjectsSlug.js';
-import { urlFor } from '../lib/sanity.image.js';
+import { imageUrl } from '../lib/sanity.image.js';
+import { SanityImage } from '../components/SanityImage';
 import { PortableText } from '@portabletext/react';
 import { useMoreWorkSameCategory } from '../hooks/useMoreWorkSameCategory';
+import { Lightbox } from '../components/Lightbox';
 
 const CATEGORY_LABEL = {
 	architecture: 'Architecture',
@@ -18,26 +21,75 @@ const MORE_LABEL = {
 	ambient: 'Spatial studies',
 };
 
-function imgUrl(image, width) {
-	if (!image) return '';
-	return urlFor(image).width(width).quality(70).auto('format').url();
-}
-
 export function ProjectSlug() {
 	const { slug } = useParams();
 	const { data, loading } = useProjectBySlug(slug);
 
+	const [lbOpen, setLbOpen] = useState(false);
+	const [lbIndex, setLbIndex] = useState(0);
+
+	const category = data?.category;
+	const images = data?.images || [];
+
 	const { items: moreWork = [], loading: moreLoading } = useMoreWorkSameCategory({
-		slug, // ✅ usa o slug do URL
-		category: data?.category,
+		slug,
+		category,
 	});
 
-	if (loading) return <div className='container-page pt-[25vh] px-[7rem]'>Loading…</div>;
+	const moreTitle = category ? `More ${MORE_LABEL[category] || category}` : 'More work';
+
+	const lbImages = useMemo(() => {
+		return images.map(img => ({
+			src: imageUrl(img, 'lightbox'),
+			alt: img?.alt || '',
+		}));
+	}, [images]);
+
+	const openAt = i => {
+		setLbIndex(i);
+		setLbOpen(true);
+	};
+
+	const prev = () => setLbIndex(i => (i - 1 + lbImages.length) % lbImages.length);
+	const next = () => setLbIndex(i => (i + 1) % lbImages.length);
+
+	if (loading) {
+		return (
+			<div className='pt-[17vh] pb-[7rem] pr-[7rem] pl-[7rem]'>
+				<div className='flex flex-col justify-center items-center'>
+					<div className='h-10 w-[18rem] bg-[rgba(0,0,0,0.04)] mb-6' />
+
+					<div className='bg-[rgba(0,0,0,0.04)] h-[52px] w-[170px] mb-[3rem]' />
+
+					<div className='w-[560px]'>
+						<div className='h-4 w-full bg-[rgba(0,0,0,0.04)] mb-3' />
+						<div className='h-4 w-[92%] bg-[rgba(0,0,0,0.04)] mb-3' />
+						<div className='h-4 w-[78%] bg-[rgba(0,0,0,0.04)] mb-6' />
+
+						<div className='flex gap-6 mb-2'>
+							<div className='h-4 w-12 bg-[rgba(0,0,0,0.04)]' />
+							<div className='h-4 w-16 bg-[rgba(0,0,0,0.04)]' />
+						</div>
+
+						<div className='flex gap-6'>
+							<div className='h-4 w-14 bg-[rgba(0,0,0,0.04)]' />
+							<div className='h-4 w-24 bg-[rgba(0,0,0,0.04)]' />
+						</div>
+					</div>
+				</div>
+
+				<div className='mt-[4rem] columns-1 lg:columns-2 [column-gap:3rem]'>
+					{[520, 680, 460, 620].map((h, i) => (
+						<div key={i} className='mb-8 break-inside-avoid'>
+							<div className='bg-[rgba(0,0,0,0.04)] w-full' style={{ height: `${h}px` }} />
+						</div>
+					))}
+				</div>
+			</div>
+		);
+	}
 	if (!data) return <div className='container-page pt-[25vh] px-[7rem]'>Not found</div>;
 
-	const moreTitle = data?.category ? `More ${MORE_LABEL[data.category] || data.category}` : 'More work'; // ✅ aqui dentro
-
-	const images = data.images || [];
 	const isSingle = images.length <= 1;
 
 	return (
@@ -45,15 +97,17 @@ export function ProjectSlug() {
 			<div className='flex flex-col justify-center items-center'>
 				<h1 className='text-lead font-[600] max-w-[23ch] mb-6 text-center'>{data.title}</h1>
 
-				<div className='bg-[rgba(0,0,0,0.04)] backdrop-blur-[50px] px-4 py-3 text-nav'>{data.category ? <div>{CATEGORY_LABEL[data.category] || data.category}</div> : null}</div>
+				<div className='bg-[rgba(0,0,0,0.04)] backdrop-blur-[50px] px-4 py-3 text-nav'>{category ? <div>{CATEGORY_LABEL[category] || category}</div> : null}</div>
 
 				<div className='mt-[3rem]'>
 					<div className='w-[560px] mb-2'>{data.description?.length ? <PortableText value={data.description} /> : null}</div>
 
-					<div className='flex gap-6'>
-						<span className='opacity-60'>Year</span>
-						{data.year ? <span>{data.year}</span> : null}
-					</div>
+					{data.year ? (
+						<div className='flex gap-6'>
+							<span className='opacity-60'>Year</span>
+							<span>{data.year}</span>
+						</div>
+					) : null}
 
 					{data.client ? (
 						<div className='flex gap-6'>
@@ -68,20 +122,31 @@ export function ProjectSlug() {
 			<div className='mt-[4rem]'>
 				{isSingle ? (
 					images[0] ? (
-						<div className='overflow-hidden'>
-							<img src={imgUrl(images[0], 2400)} alt={images[0]?.alt || ''} className='w-full h-auto object-cover' loading='lazy' decoding='async' />
-						</div>
+						<button type='button' onClick={() => openAt(0)} className='block w-full overflow-hidden text-left' aria-label='Open image'>
+							<SanityImage image={images[0]} preset='detail' alt={images[0]?.alt || ''} className='w-full' imgClassName='w-full h-auto object-cover' loading='eager' sizes='100vw' />
+						</button>
 					) : null
 				) : (
 					<div className='columns-1 lg:columns-2 [column-gap:3rem]'>
 						{images.map((img, i) => (
-							<div key={img.asset?._id || i} className='mb-8 break-inside-avoid overflow-hidden'>
-								<img src={imgUrl(img, 1800)} alt={img.alt || ''} className='w-full h-auto object-cover' loading='lazy' decoding='async' />
-							</div>
+							<button key={img.asset?._id || i} type='button' onClick={() => openAt(i)} className='mb-8 break-inside-avoid overflow-hidden block w-full text-left' aria-label={`Open image ${i + 1}`}>
+								<SanityImage
+									image={img}
+									preset='detail'
+									alt={img.alt || ''}
+									className='w-full'
+									imgClassName='w-full h-auto object-cover'
+									loading={i === 0 ? 'eager' : 'lazy'}
+									sizes='(max-width: 1023px) 100vw, 50vw'
+								/>
+							</button>
 						))}
 					</div>
 				)}
 			</div>
+
+			{/* Lightbox */}
+			<Lightbox open={lbOpen} onClose={() => setLbOpen(false)} images={lbImages} index={lbIndex} onPrev={prev} onNext={next} />
 
 			{/* MORE WORK */}
 			{!moreLoading && moreWork.length > 0 ? (
@@ -93,13 +158,14 @@ export function ProjectSlug() {
 						{moreWork.map(p => (
 							<div key={p._id} className='text-center'>
 								<Link to={p.slug?.current ? `/projects/${p.slug.current}` : '/projects'} className='group block'>
-									<div className='overflow-hidden '>
-										<img
-											src={imgUrl(p.cover, 1400)}
+									<div className='overflow-hidden'>
+										<SanityImage
+											image={p.cover}
+											preset='card'
 											alt={p.cover?.alt || p.title || ''}
-											className='w-full h-auto object-cover transition-transform duration-[900ms] group-hover:scale-[1.02]'
-											loading='lazy'
-											decoding='async'
+											className='w-full'
+											imgClassName='w-full h-auto object-cover transition-transform duration-[500ms] group-hover:scale-[1.02]'
+											sizes='(max-width: 767px) 50vw, 25vw'
 										/>
 									</div>
 								</Link>

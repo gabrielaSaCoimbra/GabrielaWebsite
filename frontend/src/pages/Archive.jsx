@@ -2,15 +2,10 @@ import { useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useArchiveIndex } from '../hooks/useArchiveIndex';
-import { urlFor } from '../lib/sanity.image';
+import { SanityImage } from '../components/SanityImage';
 import GridViewIcon3 from '../components/Icons/GridViewIcon3';
 import GridViewIcon4 from '../components/Icons/GridViewIcon4';
 import ListViewIcon from '../components/Icons/ListViewIcon';
-
-function imgUrl(image, width) {
-	if (!image) return '';
-	return urlFor(image).width(width).quality(70).auto('format').url();
-}
 
 const CATEGORY_LABEL = {
 	architecture: 'Architecture',
@@ -38,7 +33,7 @@ function ViewButton({ active, children, onClick, label }) {
 export function Archive() {
 	const { data, loading } = useArchiveIndex();
 
-	const [view, setView] = useState('grid3'); 
+	const [view, setView] = useState('grid3');
 	const [activeId, setActiveId] = useState(null);
 
 	const items = useMemo(() => {
@@ -69,8 +64,9 @@ export function Archive() {
 
 	const activeItem = useMemo(() => items.find(i => i.id === activeId) || null, [items, activeId]);
 
-	// classes do grid conforme o toggle
 	const gridColsClass = view === 'grid3' ? 'columns-1 md:columns-2 lg:columns-3 [column-gap:3rem]' : 'columns-1 md:columns-2 lg:columns-4 [column-gap:3rem]';
+
+	const gridSizes = view === 'grid4' ? '(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 25vw' : '(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw';
 
 	return (
 		<div className='pt-[17vh] pb-[8rem] pr-[7rem] pl-[7rem]'>
@@ -92,11 +88,12 @@ export function Archive() {
 			</aside>
 
 			{loading ? (
-				<div className='columns-1 md:columns-2 lg:columns-3 [column-gap:2rem]'>
-					{Array.from({ length: 9 }).map((_, i) => (
+				<div className='columns-1 md:columns-2 lg:columns-3 [column-gap:3rem]'>
+					{[320, 420, 280, 380, 500, 340, 460, 300, 390].map((h, i) => (
 						<div key={i} className='mb-10 break-inside-avoid'>
-							<div className='bg-border/30 h-[280px]' />
-							<div className='mt-3 h-4 w-40 bg-border/30 rounded' />
+							<div className='bg-[rgba(0,0,0,0.04)]' style={{ height: `${h}px` }} />
+							<div className='mt-4 h-4 w-40 bg-[rgba(0,0,0,0.04)]' />
+							<div className='mt-2 h-3 w-24 bg-[rgba(0,0,0,0.04)]' />
 						</div>
 					))}
 				</div>
@@ -118,18 +115,19 @@ export function Archive() {
 										{it.href ? (
 											<Link to={it.href} className='group block'>
 												<div className='overflow-hidden bg-border/20'>
-													<img
-														src={imgUrl(it.thumb, 2000)}
+													<SanityImage
+														image={it.thumb}
+														preset='card'
 														alt={it.thumb?.alt || it.title || ''}
-														className='w-full h-auto object-cover transition-transform duration-[900ms] group-hover:scale-[1.02]'
-														loading='lazy'
-														decoding='async'
+														className='w-full'
+														imgClassName='w-full h-auto object-cover transition-transform duration-[900ms] group-hover:scale-[1.02]'
+														sizes={gridSizes}
 													/>
 												</div>
 											</Link>
 										) : (
 											<div className='overflow-hidden bg-border/20'>
-												<img src={imgUrl(it.thumb, 2000)} alt={it.thumb?.alt || it.title || ''} className='w-full h-auto object-cover' loading='lazy' decoding='async' />
+												<SanityImage image={it.thumb} preset='card' alt={it.thumb?.alt || it.title || ''} className='w-full' imgClassName='w-full h-auto object-cover' sizes={gridSizes} />
 											</div>
 										)}
 									</motion.div>
@@ -150,7 +148,7 @@ export function Archive() {
 											transition={{ duration: 0.18, ease: 'easeOut' }}
 											className='overflow-hidden bg-border'
 										>
-											<img src={imgUrl(activeItem.thumb, 1200)} alt='' className='w-full h-auto object-cover' loading='lazy' decoding='async' />
+											<SanityImage image={activeItem.thumb} preset='small' alt='' className='w-full' imgClassName='w-full h-auto object-cover' sizes='380px' />
 										</motion.div>
 									) : null}
 								</AnimatePresence>
@@ -182,9 +180,9 @@ export function Archive() {
 															animate={{ opacity: 1, height: 'auto' }}
 															exit={{ opacity: 0, height: 0 }}
 															transition={{ duration: 0.18, ease: 'easeOut' }}
-															className='rounded-[1rem] overflow-hidden'
+															className=' overflow-hidden'
 														>
-															<img src={imgUrl(it.thumb, 1400)} alt='' className='w-full h-auto object-cover' />
+															<SanityImage image={it.thumb} preset='small' alt='' className='w-full' imgClassName='w-full h-auto object-cover' sizes='100vw' />
 														</motion.div>
 													) : null}
 												</AnimatePresence>
@@ -211,5 +209,3 @@ export function Archive() {
 		</div>
 	);
 }
-
-

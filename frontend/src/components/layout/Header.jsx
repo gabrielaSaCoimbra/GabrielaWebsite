@@ -92,7 +92,10 @@ export function Header() {
 												key={it.to}
 												to={it.to}
 												className={({ isActive }) =>
-													['w-full py-2 text-center text-nav leading-none transition', isActive ? 'text-black ' : 'text-black/80  hover:bg-[rgba(0,0,0,0.1)] transition duration-500'].join(' ')
+													[
+														'w-full py-2 text-center text-nav leading-none transition',
+														isActive ? 'text-black/80  hover:bg-[rgba(0,0,0,0.1)] transition duration-500' : 'text-black/80  hover:bg-[rgba(0,0,0,0.1)] transition duration-500',
+													].join(' ')
 												}
 											>
 												{it.label}

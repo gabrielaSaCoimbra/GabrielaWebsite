@@ -1,10 +1,42 @@
-
 export const ABOUT_QUERY = `
 *[_type == "about"][0]{
   title,
   bio
 }
 `;
+
+/* =========================
+   IMAGE FRAGMENTS
+========================= */
+
+const IMAGE_ASSET_FIELDS = `
+  _id,
+  url,
+  metadata{
+    dimensions{
+      width,
+      height,
+      aspectRatio
+    }
+  }
+`;
+
+const IMAGE_FIELDS = `
+  alt,
+  asset->{
+    ${IMAGE_ASSET_FIELDS}
+  }
+`;
+
+const COVER_IMAGE_FIELDS = `
+  "cover": images[0]{
+    ${IMAGE_FIELDS}
+  }
+`;
+
+/* =========================
+   HOME
+========================= */
 
 // WORKS OVERVIEW (tiles da landing)
 export const WORKS_OVERVIEW_QUERY = `
@@ -14,20 +46,17 @@ export const WORKS_OVERVIEW_QUERY = `
     title,
     enabled,
     image{
-      alt,
-      asset->
+      ${IMAGE_FIELDS}
     }
   }
 }
 `;
 
-
-
 /* =========================
    PROJECTS
 ========================= */
 
-// BASE PROJECT FIELDS (reuse mental)
+// BASE PROJECT FIELDS
 const PROJECT_FIELDS = `
   _id,
   title,
@@ -37,8 +66,7 @@ const PROJECT_FIELDS = `
   client,
   description,
   images[]{
-    alt,
-    asset->
+    ${IMAGE_FIELDS}
   }
 `;
 
@@ -66,7 +94,7 @@ export const EXHIBITION_PROJECTS_QUERY = `
 }
 `;
 
-// PROJECT DETAIL (opcional, se tiveres página individual)
+// PROJECT DETAIL
 export const PROJECT_BY_SLUG_QUERY = `
 *[_type == "project" && slug.current == $slug][0]{
   ${PROJECT_FIELDS}
@@ -84,12 +112,7 @@ export const WORKS_INDEX_QUERY = `
       "category": "ambient",
       "tag": "Ambient",
       image{
-        alt,
-        asset->{
-          _id,
-          url,
-          metadata{dimensions{width,height,aspectRatio}}
-        }
+        ${IMAGE_FIELDS}
       }
     },
 
@@ -108,18 +131,10 @@ export const WORKS_INDEX_QUERY = `
         category == "exhibition" => "Exhibitions",
         "Project"
       ),
-      "cover": images[0]{
-        alt,
-        asset->{
-          _id,
-          url,
-          metadata{dimensions{width,height,aspectRatio}}
-        }
-      }
+      ${COVER_IMAGE_FIELDS}
     }
 }
 `;
-
 
 export const ARCHIVE_INDEX_QUERY = `
 {
@@ -132,12 +147,7 @@ export const ARCHIVE_INDEX_QUERY = `
       "category": "ambient",
       "tag": "Ambient",
       image{
-        alt,
-        asset->{
-          _id,
-          url,
-          metadata{dimensions{width,height,aspectRatio}}
-        }
+        ${IMAGE_FIELDS}
       }
     },
 
@@ -156,14 +166,7 @@ export const ARCHIVE_INDEX_QUERY = `
         category == "exhibition" => "Exhibitions",
         "Project"
       ),
-      "cover": images[0]{
-        alt,
-        asset->{
-          _id,
-          url,
-          metadata{dimensions{width,height,aspectRatio}}
-        }
-      }
+      ${COVER_IMAGE_FIELDS}
     }
 }
 `;
@@ -180,13 +183,6 @@ export const MORE_WORK_SAME_CATEGORY_QUERY = `
   slug,
   category,
   year,
-  "cover": images[0]{
-    alt,
-    asset->{
-      _id,
-      url,
-      metadata{dimensions{width,height,aspectRatio}}
-    }
-  }
+  ${COVER_IMAGE_FIELDS}
 }
 `;

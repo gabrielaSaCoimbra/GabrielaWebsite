@@ -25,22 +25,14 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 }
 
-::selection {
-	background: rgb(var(--accent) / 0.18);
-}
-
-
 .marquee {
 	--gap: 5rem;
 	--card-w: clamp(260px, 26vw, 520px);
 	--card-r: 1rem;
 	--duration: 80s;
-
 	position: relative;
 	overflow: hidden;
 }
-
-
 
 .marquee__track {
 	display: flex;
@@ -48,12 +40,11 @@ body {
 	gap: var(--gap);
 	width: max-content;
 	will-change: transform;
-	animation: marquee var(--duration) linear infinite;
+	animation: none;
 }
 
-/* pausa no hover (opcional) */
-.marquee:hover .marquee__track {
-	animation-play-state: paused;
+.marquee__track.is-ready {
+	animation: marquee var(--duration) linear infinite;
 }
 
 .marquee--reverse .marquee__track {
@@ -68,16 +59,21 @@ body {
 
 .marquee__card {
 	overflow: hidden;
+	transform: translateZ(0);
 }
 
 .marquee__img {
 	display: block;
 	width: 100%;
-	height: auto; /* mantém proporção */
+	height: auto;
+	object-fit: cover;
 }
 
-/* desloca metade do “track” (porque duplicámos o conteúdo) */
 @keyframes marquee {
-	from { transform: translateX(0); }
-	to { transform: translateX(calc(-50% - (var(--gap) / 2))); }
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(calc(-50% - (var(--gap) / 2)));
+	}
 }
