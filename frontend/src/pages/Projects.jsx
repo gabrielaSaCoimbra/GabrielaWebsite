@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Link, useSearchParams } from 'react-router-dom';
+import { AnimatedPAfterH1 } from '../components/AnimatedText';
 import { useProjectsIndex } from '../hooks/useProjectsIndex';
 import { imageUrl } from '../lib/sanity.image';
 import { SanityImage } from '../components/SanityImage';
@@ -144,7 +145,7 @@ export function Projects() {
 					{heading} {total !== null ? <span className='text-black/40'>{total}</span> : null}
 				</div>
 
-				{description ? <div className='max-w-[80ch] text-sm'>{description}</div> : null}
+				{description ? <AnimatedPAfterH1 className='max-w-[80ch] text-sm'>{description}</AnimatedPAfterH1> : null}
 
 				<div className='hidden md:block mt-6'>
 					<div className='flex gap-2'>
@@ -213,8 +214,8 @@ export function Projects() {
 												/>
 											</button>
 
-											{it.title ? <div className='mt-4 text-nav font-[600]'>{it.title}</div> : null}
-											<div className={it.title ? 'mt-1 text-sm' : 'mt-4 text-sm'}>{it.tag}</div>
+											{it.title ? <AnimatedPAfterH1 className='mt-4 text-nav font-[600]'>{it.title}</AnimatedPAfterH1> : null}
+											<AnimatedPAfterH1 className={it.title ? 'mt-1 text-sm' : 'mt-4 text-sm'}>{it.tag}</AnimatedPAfterH1>
 										</motion.div>
 									);
 								}
@@ -242,8 +243,8 @@ export function Projects() {
 												/>
 											</div>
 
-											<div className='mt-4 text-nav font-[600]'>{it.title}</div>
-											<div className='mt-1 text-sm'>{it.tag}</div>
+											<AnimatedPAfterH1 className='mt-4 text-nav font-[600]'>{it.title}</AnimatedPAfterH1>
+											<AnimatedPAfterH1 className='mt-1 text-sm'>{it.tag}</AnimatedPAfterH1>
 										</Link>
 									</motion.div>
 								);

@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react';
 import { LocalImage } from '../components/LocalImage';
+import { AnimatedPAfterH1 } from '../components/AnimatedText';
+
 
 import img1 from '/9.jpg';
 import img2 from '/Cave.jpg';
@@ -36,10 +38,10 @@ export function About() {
 	return (
 		<div className='bg-[#f6ffcc]'>
 			<section className='px-[7rem] pt-[25vh] text-white flex items-center justify-center'>
-				<p className='text-lead text-fg/90 font-[600]'>
+				<AnimatedPAfterH1 className='text-lead text-fg/90 font-[600]'>
 					I'm a 3D artist passionate about bringing spaces and ideas to life through digital visualization. With a keen eye for detail and a deep understanding of lighting, materials and composition,
 					my creations are immersive environments that blend realism with artistic expression.
-				</p>
+				</AnimatedPAfterH1>
 			</section>
 
 			<section className='pt-[15vh]'>
@@ -74,10 +76,10 @@ export function About() {
 			</section>
 
 			<section className='pt-[15vh] px-[7rem] text-white flex items-center justify-center'>
-				<p className='text-lead text-fg/90 font-[600]'>
+				<AnimatedPAfterH1 className='text-lead text-fg/90 font-[600]'>
 					Specializing in interior visualization and artistic 3D work, my projects go beyond mere representation - they evoke mood, atmosphere, and storytelling. Whether it's a high-end architectual
 					space, a conceptual piece, or an experimental scene, each render is crafted to engage, inspire and resonate.
-				</p>
+				</AnimatedPAfterH1>
 			</section>
 		</div>
 	);

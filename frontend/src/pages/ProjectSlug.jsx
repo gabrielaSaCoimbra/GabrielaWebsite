@@ -6,6 +6,7 @@ import { SanityImage } from '../components/SanityImage';
 import { PortableText } from '@portabletext/react';
 import { useMoreWorkSameCategory } from '../hooks/useMoreWorkSameCategory';
 import { Lightbox } from '../components/Lightbox';
+import { AnimatedPAfterH1 } from '../components/AnimatedText.jsx';
 
 const CATEGORY_LABEL = {
 	architecture: 'Architecture',
@@ -127,9 +128,9 @@ export function ProjectSlug() {
 						</button>
 					) : null
 				) : (
-					<div className='columns-1 lg:columns-2 [column-gap:3rem]'>
+					<div className='columns-1 lg:columns-2 gap-[3rem]'>
 						{images.map((img, i) => (
-							<button key={img.asset?._id || i} type='button' onClick={() => openAt(i)} className='mb-8 break-inside-avoid overflow-hidden block w-full text-left' aria-label={`Open image ${i + 1}`}>
+							<button key={img.asset?._id || i} type='button' onClick={() => openAt(i)} className='mb-12 break-inside-avoid overflow-hidden block w-full text-left' aria-label={`Open image ${i + 1}`}>
 								<SanityImage
 									image={img}
 									preset='detail'
@@ -152,7 +153,7 @@ export function ProjectSlug() {
 			{!moreLoading && moreWork.length > 0 ? (
 				<div className='mt-[6rem]'>
 					<hr className='border-[rgba(0,0,0,0.1)] mb-10' />
-					<div className='text-center text-nav mb-10'>{moreTitle}</div>
+					<AnimatedPAfterH1 className='text-center text-nav mb-10'>{moreTitle}</AnimatedPAfterH1>
 
 					<div className='grid grid-cols-2 md:grid-cols-4 gap-x-10 gap-y-10 items-start'>
 						{moreWork.map(p => (
@@ -169,7 +170,7 @@ export function ProjectSlug() {
 										/>
 									</div>
 								</Link>
-								<div className='mt-6 text-sm'>{p.title}</div>
+								<AnimatedPAfterH1 className='mt-6 text-sm'>{p.title}</AnimatedPAfterH1>
 							</div>
 						))}
 					</div>

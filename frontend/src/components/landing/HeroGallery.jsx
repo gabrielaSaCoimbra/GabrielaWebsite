@@ -20,6 +20,7 @@ export function HeroGallery() {
 				modules={[Autoplay, EffectFade]}
 				effect='fade'
 				loop={true}
+				speed={2800}
 				autoplay={{
 					delay: 6000,
 					disableOnInteraction: false,
