@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 :root {
 	--bg: 248 245 241;
 	--fg: 18 18 18;
@@ -20,7 +18,8 @@ body {
 body {
 	background: rgb(var(--bg));
 	color: rgb(var(--fg));
-	font-family: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+	font-family: 'Space Grotesk', sans-serif;
+	font-optical-sizing: auto;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
