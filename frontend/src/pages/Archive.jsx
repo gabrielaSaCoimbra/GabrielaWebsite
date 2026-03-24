@@ -71,9 +71,8 @@ export function Archive() {
 	const gridSizes = view === 'grid4' ? '(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 25vw' : '(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw';
 
 	return (
-		<div className='pt-[20vh] pb-[8rem] pr-[7rem] pl-[7rem]'>
+		<div className='pt-[15vh] md:pt-[20vh] pb-6 md:pb-[7rem] md:px-[7rem] px-6'>
 			<div className='text-lead text-center font-[600] text-black/80 mb-[3.5rem]'>Archive {total !== null ? <span className='text-black/40'>{total}</span> : null}</div>
-
 
 			<aside className='fixed bottom-6 left-1/2 -translate-x-1/2 z-20'>
 				<div className='flex gap-2'>
@@ -90,22 +89,6 @@ export function Archive() {
 					</ViewButton>
 				</div>
 			</aside>
-
-			{/* <aside className='fixed bottom-6 left-1/2 -translate-x-1/2 z-20'>
-				<div className='flex gap-2'>
-					<ViewButton label='Grid 3 columns' active={view === 'grid3'} onClick={() => setView('grid3')}>
-						<GridViewIcon3 size={22} color='currentColor' />
-					</ViewButton>
-
-					<ViewButton label='Grid 4 columns' active={view === 'grid4'} onClick={() => setView('grid4')}>
-						<GridViewIcon4 size={22} color='currentColor' />
-					</ViewButton>
-
-					<ViewButton label='List view' active={view === 'list'} onClick={() => setView('list')}>
-						<ListViewIcon size={22} color='currentColor' />
-					</ViewButton>
-				</div>
-			</aside> */}
 
 			{loading ? (
 				<div className='columns-1 md:columns-2 lg:columns-3 [column-gap:3rem]'>

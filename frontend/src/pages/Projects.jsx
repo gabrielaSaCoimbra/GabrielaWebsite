@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Link, useSearchParams } from 'react-router-dom';
 import { AnimatedPAfterH1 } from '../components/AnimatedText';
@@ -76,14 +76,40 @@ export function Projects() {
 	const [searchParams, setSearchParams] = useSearchParams();
 	const filter = normalizeCat(searchParams.get('cat') || 'all');
 
+	const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+	const mobileFiltersRef = useRef(null);
+
 	const heading = HEADING_BY_FILTER[filter] || 'All Projects';
 	const description = DESCRIPTION_BY_FILTER[filter] || '';
+
+	const activeFilterLabel = FILTERS.find(f => f.key === filter)?.label || 'All';
 
 	const setFilter = next => {
 		const cat = normalizeCat(next);
 		if (cat === 'all') setSearchParams({}, { replace: true });
 		else setSearchParams({ cat }, { replace: true });
+
+		setMobileFiltersOpen(false);
 	};
+
+	useEffect(() => {
+		const onPointerDown = e => {
+			const el = mobileFiltersRef.current;
+			if (!el) return;
+			if (el.contains(e.target)) return;
+			setMobileFiltersOpen(false);
+		};
+
+		if (mobileFiltersOpen) {
+			window.addEventListener('pointerdown', onPointerDown);
+		}
+
+		return () => window.removeEventListener('pointerdown', onPointerDown);
+	}, [mobileFiltersOpen]);
+
+	useEffect(() => {
+		setMobileFiltersOpen(false);
+	}, [filter]);
 
 	const ambientLbImages = useMemo(() => {
 		return (data.ambient || []).map(a => ({
@@ -129,7 +155,6 @@ export function Projects() {
 		}));
 
 		if (filter === 'all') return [...projectItems, ...ambientItems];
-
 		if (filter === 'spatial-studies') return ambientItems;
 
 		const cat = FILTER_TO_PROJECT_CATEGORY[filter];
@@ -138,8 +163,10 @@ export function Projects() {
 
 	const total = loading ? null : items.length;
 
+	const mobileFilterOptions = FILTERS.filter(f => f.key !== filter);
+
 	return (
-		<div className='pt-[20vh] pb-[7rem] pr-[7rem] pl-[7rem]'>
+		<div className='pt-[15vh] md:pt-[20vh] pb-[4rem] md:pb-[7rem] md:px-[7rem] px-6'>
 			<div className='mb-[3.5rem] flex flex-col gap-4 justify-center items-center'>
 				<div className='text-lead font-[600] text-black/80'>
 					{heading} {total !== null ? <span className='text-black/40'>{total}</span> : null}
@@ -159,22 +186,53 @@ export function Projects() {
 			</div>
 
 			<div className='relative'>
-				{/* <aside className='hidden md:block fixed bottom-6 left-1/2 -translate-x-1/2 z-20'>
-					<div className='flex gap-2'>
-						{FILTERS.map(f => (
-							<FilterButton key={f.key} active={filter === f.key} onClick={() => setFilter(f.key)}>
-								{f.label}
-							</FilterButton>
-						))}
-					</div>
-				</aside> */}
+				{/* MOBILE FILTER DROPDOWN */}
+				<div className='md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-30'>
+					<motion.div
+						ref={mobileFiltersRef}
+						initial={false}
+						animate={mobileFiltersOpen ? 'open' : 'closed'}
+						className='pointer-events-auto w-[230px] overflow-hidden bg-[rgba(0,0,0,0.04)] backdrop-blur-[50px]'
+						variants={{
+							closed: { height: 44 },
+							open: { height: 44 + mobileFilterOptions.length * 38 },
+						}}
+						transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+					>
+						<button
+							type='button'
+							onClick={() => setMobileFiltersOpen(v => !v)}
+							aria-expanded={mobileFiltersOpen}
+							aria-label={mobileFiltersOpen ? 'Close filters' : 'Open filters'}
+							className='h-11 w-full px-4 flex items-center justify-between text-nav text-black/80'
+						>
+							<span>{activeFilterLabel}</span>
 
-				<div className='md:hidden mb-8 flex gap-4 overflow-x-auto'>
-					{FILTERS.map(f => (
-						<button key={f.key} type='button' onClick={() => setFilter(f.key)} className={['whitespace-nowrap text-sm transition-opacity', filter === f.key ? 'opacity-100' : 'opacity-10'].join(' ')}>
-							{f.label}
+							<div className='relative h-4 w-4'>
+								<motion.span className='absolute top-1/2 left-0 block h-[1.5px] w-4 bg-black/80' style={{ y: '-50%' }} />
+								<motion.span
+									className='absolute top-1/2 left-0 block h-[1.5px] w-4 bg-black/80'
+									style={{ y: '-50%' }}
+									animate={{ rotate: mobileFiltersOpen ? 0 : 90 }}
+									transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+								/>
+							</div>
 						</button>
-					))}
+
+						<AnimatePresence initial={false}>
+							{mobileFiltersOpen && (
+								<motion.div key='mobile-filters' initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2, ease: 'easeOut' }} className='px-4 pb-5'>
+									<div className='flex flex-col items-start'>
+										{mobileFilterOptions.map(f => (
+											<button key={f.key} type='button' onClick={() => setFilter(f.key)} className='w-full py-2 text-center text-nav text-black/80 '>
+												{f.label}
+											</button>
+										))}
+									</div>
+								</motion.div>
+							)}
+						</AnimatePresence>
+					</motion.div>
 				</div>
 
 				{loading ? (
@@ -188,7 +246,7 @@ export function Projects() {
 						))}
 					</div>
 				) : (
-					<motion.div className='columns-1 md:columns-2 lg:columns-3 [column-gap:3rem]'>
+					<motion.div className='columns-1 md:columns-2 lg:columns-3  md:[column-gap:3rem]'>
 						<AnimatePresence initial={false}>
 							{items.map(it => {
 								const key = `${it.kind}-${it.id}`;
@@ -201,9 +259,9 @@ export function Projects() {
 											animate={{ opacity: 1, y: 0 }}
 											exit={{ opacity: 0, y: -10 }}
 											transition={{ duration: 0.25, ease: 'easeOut' }}
-											className='mb-10 break-inside-avoid'
+											className='mb-6 md:mb-10 break-inside-avoid'
 										>
-											<button type='button' onClick={() => openAmbient(it.id)} className='overflow-hidden bg-border/20 block w-full text-left' aria-label='Open image'>
+											<button type='button' onClick={() => openAmbient(it.id)} className='overflow-hidden  block w-full text-left' aria-label='Open image'>
 												<SanityImage
 													image={it.image}
 													preset='card'
@@ -215,7 +273,7 @@ export function Projects() {
 											</button>
 
 											{it.title ? <AnimatedPAfterH1 className='mt-4 text-nav font-[600]'>{it.title}</AnimatedPAfterH1> : null}
-											<AnimatedPAfterH1 className={it.title ? 'mt-1 text-sm' : 'mt-4 text-sm'}>{it.tag}</AnimatedPAfterH1>
+											<AnimatedPAfterH1 className={it.title ? 'md:mt-1 text-sm' : 'mt-4 text-sm'}>{it.tag}</AnimatedPAfterH1>
 										</motion.div>
 									);
 								}
@@ -229,7 +287,7 @@ export function Projects() {
 										animate={{ opacity: 1, y: 0 }}
 										exit={{ opacity: 0, y: -10 }}
 										transition={{ duration: 0.25, ease: 'easeOut' }}
-										className='mb-10 break-inside-avoid'
+										className='mb-6 md:mb-10 break-inside-avoid'
 									>
 										<Link to={href} className='group block'>
 											<div className='overflow-hidden'>
@@ -244,7 +302,7 @@ export function Projects() {
 											</div>
 
 											<AnimatedPAfterH1 className='mt-4 text-nav font-[600]'>{it.title}</AnimatedPAfterH1>
-											<AnimatedPAfterH1 className='mt-1 text-sm'>{it.tag}</AnimatedPAfterH1>
+											<AnimatedPAfterH1 className='md:mt-1 text-sm'>{it.tag}</AnimatedPAfterH1>
 										</Link>
 									</motion.div>
 								);

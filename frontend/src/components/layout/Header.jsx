@@ -48,7 +48,7 @@ export function Header() {
 					ref={navRef}
 					initial={false}
 					animate={open ? 'open' : 'closed'}
-					className='pointer-events-auto w-[350px] max-w-[92vw] overflow-hidden bg-[rgba(0,0,0,0.04)] backdrop-blur-[50px]'
+					className='pointer-events-auto lg:w-[350px] lg:max-w-[92vw] w-full mx-6 md:mx-0 overflow-hidden bg-[rgba(0,0,0,0.04)] backdrop-blur-[50px]'
 					variants={{
 						closed: { height: 45 },
 						open: { height: 208 },

@@ -56,7 +56,7 @@ export function ProjectSlug() {
 
 	if (loading) {
 		return (
-			<div className='pt-[17vh] pb-[7rem] pr-[7rem] pl-[7rem]'>
+			<div className='pt-[15vh] md:pt-[20vh] pb-6 md:pb-[7rem] md:px-[7rem] px-6'>
 				<div className='flex flex-col justify-center items-center'>
 					<div className='h-10 w-[18rem] bg-[rgba(0,0,0,0.04)] mb-6' />
 
@@ -94,14 +94,14 @@ export function ProjectSlug() {
 	const isSingle = images.length <= 1;
 
 	return (
-		<div className='pt-[20vh] pb-[7rem] pr-[7rem] pl-[7rem]'>
+		<div className='pt-[15vh] md:pt-[20vh] pb-6 md:pb-[7rem] md:px-[7rem] px-6'>
 			<div className='flex flex-col justify-center items-center'>
-				<h1 className='text-lead font-[600] max-w-[23ch] mb-6 text-center'>{data.title}</h1>
+				<div className='text-lead font-[600] max-w-[23ch] mb-4 md:mb-6 text-center'>{data.title}</div>
 
 				<div className='bg-[rgba(0,0,0,0.04)] backdrop-blur-[50px] px-4 py-3 text-nav'>{category ? <div>{CATEGORY_LABEL[category] || category}</div> : null}</div>
 
-				<div className='mt-[3rem]'>
-					<div className='w-[560px] mb-2'>{data.description?.length ? <PortableText value={data.description} /> : null}</div>
+				<div className='mt-8 md:mt-[3rem]'>
+					<div className='lg:w-[560px] mb-2'>{data.description?.length ? <PortableText value={data.description} /> : null}</div>
 
 					{data.year ? (
 						<div className='flex gap-6'>
@@ -128,9 +128,9 @@ export function ProjectSlug() {
 						</button>
 					) : null
 				) : (
-					<div className='columns-1 lg:columns-2 gap-[3rem]'>
+					<div className='columns-1 lg:columns-2 gap-6 md:gap-[3rem]'>
 						{images.map((img, i) => (
-							<button key={img.asset?._id || i} type='button' onClick={() => openAt(i)} className='mb-12 break-inside-avoid overflow-hidden block w-full text-left' aria-label={`Open image ${i + 1}`}>
+							<button key={img.asset?._id || i} type='button' onClick={() => openAt(i)} className='mb-6 md:mb-12 break-inside-avoid overflow-hidden block w-full text-left' aria-label={`Open image ${i + 1}`}>
 								<SanityImage
 									image={img}
 									preset='detail'
@@ -151,11 +151,11 @@ export function ProjectSlug() {
 
 			{/* MORE WORK */}
 			{!moreLoading && moreWork.length > 0 ? (
-				<div className='mt-[6rem]'>
+				<div className='mt-[4rem] md:mt-[6rem]'>
 					<hr className='border-[rgba(0,0,0,0.1)] mb-10' />
 					<AnimatedPAfterH1 className='text-center text-nav mb-10'>{moreTitle}</AnimatedPAfterH1>
 
-					<div className='grid grid-cols-2 md:grid-cols-4 gap-x-10 gap-y-10 items-start'>
+					<div className='grid grid-cols-2 md:grid-cols-4 md:gap-10 gap-6 items-start'>
 						{moreWork.map(p => (
 							<div key={p._id} className='text-center'>
 								<Link to={p.slug?.current ? `/projects/${p.slug.current}` : '/projects'} className='group block'>
@@ -170,7 +170,7 @@ export function ProjectSlug() {
 										/>
 									</div>
 								</Link>
-								<AnimatedPAfterH1 className='mt-6 text-sm'>{p.title}</AnimatedPAfterH1>
+								<AnimatedPAfterH1 className='mt-4 md:mt-6 text-sm'>{p.title}</AnimatedPAfterH1>
 							</div>
 						))}
 					</div>

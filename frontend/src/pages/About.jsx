@@ -88,7 +88,7 @@ function StickyRevealTransition({ bgImage, children }) {
 				</div>
 
 				<div className='relative z-10 flex h-full items-center justify-center px-6 md:px-12 lg:px-[7rem]'>
-					<div className='w-[950px]'>
+					<div className='md:w-[950px]'>
 						<div className='text-lead font-[600] '>
 							{REVEAL_TEXT.map((word, index) => (
 								<RevealWord key={`${word}-${index}`} word={word} index={index} total={REVEAL_TEXT.length} progress={scrollYProgress} />
@@ -131,14 +131,14 @@ export function About() {
 
 	return (
 		<div className='bg-[#8f4638]'>
-			<section className='px-[7rem] pt-[20vh] text-black/80  flex items-center justify-center'>
+			<section className='px-6 md:px-[7rem] pt-[15vh] md:pt-[20vh] text-black/80  flex items-center justify-center'>
 				<AnimatedPAfterH1 className='text-lead font-[600]'>
 					I'm a 3D artist passionate about bringing spaces and ideas to life through digital visualization. With a keen eye for detail and a deep understanding of lighting, materials and composition,
 					my creations are immersive environments that blend realism with artistic expression.
 				</AnimatedPAfterH1>
 			</section>
 
-			<section className='pt-[10vh]'>
+			<section className='py-[5vh] md:pt-[10vh]'>
 				<div className='w-full marquee'>
 					<div>
 						<div className={`marquee__track ${marqueeReady ? 'is-ready' : ''}`} aria-hidden='true'>
@@ -169,7 +169,7 @@ export function About() {
 				</div>
 			</section>
 
-			<section className='py-[10vh] px-[7rem] text-black/80  flex items-center justify-center'>
+			<section className='py-[5vh] md:py-[10vh] px-6 md:px-[7rem] text-black/80  flex items-center justify-center'>
 				<AnimatedPAfterH1 className='text-lead  font-[600]'>
 					Specializing in interior visualization and artistic 3D work, my projects go beyond mere representation - they evoke mood, atmosphere, and storytelling. Whether it's a high-end architectual
 					space, a conceptual piece, or an experimental scene, each render is crafted to engage, inspire and resonate.
@@ -207,8 +207,6 @@ export function About() {
 					</div>
 				</section>
 			</StickyRevealTransition>
-
-			
 		</div>
 	);
 }

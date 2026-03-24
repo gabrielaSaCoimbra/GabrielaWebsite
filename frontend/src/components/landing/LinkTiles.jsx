@@ -84,8 +84,8 @@ export function LinkTiles() {
 	
 
 	return (
-		<section className='px-[7rem] pb-[6rem]'>
-			<div className='grid grid-cols-1 md:grid-cols-12 gap-y-16 md:gap-y-12'>
+		<section className='px-6 md:px-[7rem] md:pb-[6rem] pb-6'>
+			<div className='grid grid-cols-1 md:grid-cols-12 gap-y-6 md:gap-y-12'>
 				{/* 1) LEFT / upper */}
 				{architecture && (
 					<div className='md:col-start-2 md:col-span-5 md:row-start-1'>

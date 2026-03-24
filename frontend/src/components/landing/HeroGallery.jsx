@@ -12,7 +12,7 @@ const images = [
 
 export function HeroGallery() {
 	return (
-		<section className='w-screen h-[90vh] mt-[10vh] -z-10'>
+		<section className='w-screen md:h-[90vh] h-[50vh] md:mt-[10vh] -z-10'>
 			<Swiper
 				modules={[Autoplay, EffectFade]}
 				effect='fade'
