@@ -25,7 +25,7 @@ body {
 }
 
 .marquee {
-	--gap: 5rem;
+	--gap: 2rem;
 	--card-w: clamp(260px, 26vw, 520px);
 	--card-r: 1rem;
 	--duration: 80s;

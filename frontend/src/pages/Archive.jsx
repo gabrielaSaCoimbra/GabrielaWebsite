@@ -92,7 +92,7 @@ export function Archive() {
 	const gridSizes = view === 'grid4' ? '(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 25vw' : '(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw';
 
 	return (
-		<div className='pt-[15vh] md:pt-[25vh] pb-6 md:pb-[7rem] md:px-[7rem] px-6'>
+		<div className='pt-[15vh] md:pt-[25vh] pb-6 md:pb-[6rem] md:px-[7rem] px-6'>
 			<div className='text-lead text-center font-[600] text-black/80 '>Archive {total !== null ? <span className='text-black/40'>{total}</span> : null}</div>
 
 
@@ -153,13 +153,13 @@ export function Archive() {
 										<motion.div
 											onMouseEnter={() => setActiveId(it.id)}
 											onMouseLeave={() => setActiveId(null)}
-											className='grid grid-cols-12 gap-6 py-4 items-center'
+											className='grid grid-cols-9 gap-6 py-4 items-center'
 											animate={{ x: isActive ? 10 : 0 }}
 											transition={{ duration: 0.18, ease: 'easeOut' }}
 										>
-											<div className='col-span-7 text-nav font-[600]'>{it.title || ''}</div>
-											<div className='col-span-2 text-navLight opacity-80'>{it.tag}</div>
-											<div className='col-span-3 text-navLight opacity-80 text-right'>{it.year ? it.year : ''}</div>
+											<div className='col-span-4 text-nav font-[600]'>{it.title || ''}</div>
+											<div className='col-span-4 text-navLight opacity-80'>{it.tag}</div>
+											<div className='col-span-1 text-navLight opacity-80 text-right'>{it.year ? it.year : ''}</div>
 
 											<div className='col-span-12 lg:hidden pt-4'>
 												<AnimatePresence>
@@ -192,7 +192,6 @@ export function Archive() {
 							</div>
 
 							<div className='border-t border-black' />
-							<div className='hidden lg:block h-10' />
 						</motion.div>
 					) : (
 						<motion.div key='grid' initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2, ease: 'easeOut' }}>

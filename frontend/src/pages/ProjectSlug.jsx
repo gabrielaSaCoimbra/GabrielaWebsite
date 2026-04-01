@@ -7,7 +7,6 @@ import { PortableText } from '@portabletext/react';
 import { useMoreWorkSameCategory } from '../hooks/useMoreWorkSameCategory';
 import { Lightbox } from '../components/Lightbox';
 import { AnimatedPAfterH1 } from '../components/AnimatedText.jsx';
-import  CloseSmallIcon  from '../components/Icons/CloseSmallIcon.jsx';
 
 const CATEGORY_LABEL = {
 	architecture: 'Architecture',
@@ -90,7 +89,7 @@ export function ProjectSlug() {
 					</div>
 				</div>
 
-				<div className='mt-[4rem] columns-1 lg:columns-2 [column-gap:3rem]'>
+				<div className='mt-[4rem] columns-1 lg:columns-2 [column-gap:2rem]'>
 					{[520, 680, 460, 620].map((h, i) => (
 						<div key={i} className='mb-8 break-inside-avoid'>
 							<div className='bg-[rgba(0,0,0,0.04)] w-full' style={{ height: `${h}px` }} />
@@ -105,7 +104,7 @@ export function ProjectSlug() {
 	const isSingle = images.length <= 1;
 
 	return (
-		<div className='pt-[15vh] md:pt-[25vh] pb-6 md:pb-[7rem] md:px-[7rem] px-6'>
+		<div className='pt-[15vh] md:pt-[25vh] pb-6 md:pb-[6rem] md:px-[7rem] px-6'>
 			<div className='flex flex-col justify-center items-center'>
 				<div className='text-lead font-[600] max-w-[23ch] mb-4 md:mb-5 text-center'>{data.title}</div>
 
@@ -136,8 +135,16 @@ export function ProjectSlug() {
 			<div className='mt-24'>
 				{isSingle ? (
 					images[0] ? (
-						<button type='button' onClick={() => openAt(0)} className='block w-full overflow-hidden text-left' aria-label='Open image'>
-							<SanityImage image={images[0]} preset='detail' alt={images[0]?.alt || ''} className='w-full' imgClassName='w-full h-auto object-cover' loading='eager' sizes='100vw' />
+						<button type='button' onClick={() => openAt(0)} className='block w-full group overflow-hidden text-left' aria-label='Open image'>
+							<SanityImage
+								image={images[0]}
+								preset='detail'
+								alt={images[0]?.alt || ''}
+								className='w-full'
+								imgClassName='w-full h-auto object-cover transition-transform duration-[500ms] group-hover:scale-[1.02]'
+								loading='eager'
+								sizes='100vw'
+							/>
 						</button>
 					) : null
 				) : (
@@ -147,7 +154,7 @@ export function ProjectSlug() {
 								key={img.asset?._id || i}
 								type='button'
 								onClick={() => openAt(i)}
-								className='mb-6 md:mb-8 break-inside-avoid overflow-hidden block w-full text-left'
+								className='mb-6 md:mb-8 break-inside-avoid overflow-hidden block w-full text-left group'
 								aria-label={`Open image ${i + 1}`}
 							>
 								<SanityImage
@@ -155,7 +162,7 @@ export function ProjectSlug() {
 									preset='detail'
 									alt={img.alt || ''}
 									className='w-full'
-									imgClassName='w-full h-auto object-cover'
+									imgClassName='w-full h-auto object-cover transition-transform duration-[500ms] group-hover:scale-[1.02]'
 									loading={i === 0 ? 'eager' : 'lazy'}
 									sizes='(max-width: 1023px) 100vw, 50vw'
 								/>
