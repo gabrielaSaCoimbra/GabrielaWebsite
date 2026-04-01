@@ -57,7 +57,14 @@ export function Archive() {
 			href: p.slug?.current ? `/projects/${p.slug.current}` : null,
 		}));
 
-		return [...projectItems, ...ambientItems];
+		return [...projectItems, ...ambientItems].sort((a, b) => {
+			const yearA = Number(a.year) || 0;
+			const yearB = Number(b.year) || 0;
+
+			if (yearB !== yearA) return yearB - yearA;
+
+			return String(b.id).localeCompare(String(a.id));
+		});
 	}, [data]);
 
 	const total = loading ? null : items.length;

@@ -140,7 +140,7 @@ export function Projects() {
 			id: a._id,
 			image: a.image,
 			title: a.title,
-			year: a.year,
+			year: a.year || null,
 			tag: 'Spatial studies',
 		}));
 
@@ -149,16 +149,32 @@ export function Projects() {
 			id: p._id,
 			category: p.category,
 			title: p.title,
+			year: p.year || null,
 			slug: p.slug?.current,
 			cover: p.cover,
 			tag: p.category === 'exhibition' ? 'Artistic collaborations' : p.tag,
 		}));
 
-		if (filter === 'all') return [...projectItems, ...ambientItems];
-		if (filter === 'spatial-studies') return ambientItems;
+		const sortByYearDesc = (a, b) => {
+			const yearA = Number(a.year) || 0;
+			const yearB = Number(b.year) || 0;
+
+			if (yearB !== yearA) return yearB - yearA;
+
+			return String(b.id).localeCompare(String(a.id));
+		};
+
+		if (filter === 'all') {
+			return [...projectItems, ...ambientItems].sort(sortByYearDesc);
+		}
+
+		if (filter === 'spatial-studies') {
+			return [...ambientItems].sort(sortByYearDesc);
+		}
 
 		const cat = FILTER_TO_PROJECT_CATEGORY[filter];
-		return projectItems.filter(p => p.category === cat);
+
+		return projectItems.filter(p => p.category === cat).sort(sortByYearDesc);
 	}, [data, filter]);
 
 	const total = loading ? null : items.length;
@@ -167,7 +183,7 @@ export function Projects() {
 
 	return (
 		<div className='pt-[15vh] md:pt-[25vh] pb-[4rem] md:pb-[6rem] md:px-[7rem] px-6'>
-			<div className='mb-[4rem] flex flex-col gap-5  justify-center items-center'>
+			<div className='mb-[4rem] flex flex-col gap-5 justify-center items-center'>
 				<div className='text-lead font-[600] text-black/80'>
 					{heading} {total !== null ? <span className='text-black/40'>{total}</span> : null}
 				</div>
@@ -246,7 +262,7 @@ export function Projects() {
 						))}
 					</div>
 				) : (
-					<motion.div className='columns-1 md:columns-2 lg:columns-3  md:[column-gap:2rem]'>
+					<motion.div className='columns-1 md:columns-2 lg:columns-3 md:[column-gap:2rem]'>
 						<AnimatePresence initial={false}>
 							{items.map(it => {
 								const key = `${it.kind}-${it.id}`;
