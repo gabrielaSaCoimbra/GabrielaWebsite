@@ -37,14 +37,6 @@ const DESCRIPTION_BY_FILTER = {
 		'Focused on collaborative work with artists and curators in the development of spatial and object-based projects. Through 3D modelling and visualisation, I help translate artistic concepts into spatial proposals, exhibition layouts or object studies, allowing ideas to be tested, refined and understood before production.',
 };
 
-// Mapeia filtro (URL) -> categoria interna do Sanity (project.category)
-const FILTER_TO_PROJECT_CATEGORY = {
-	architecture: 'architecture',
-	product: 'product',
-	'artistic-collaborations': 'exhibition',
-	// spatial-studies = ambient
-};
-
 function FilterButton({ active, children, onClick }) {
 	return (
 		<button
@@ -67,6 +59,15 @@ function normalizeCat(value) {
 	return ok.has(v) ? v : 'all';
 }
 
+function sortByYearDesc(a, b) {
+	const yearA = Number(a.year) || 0;
+	const yearB = Number(b.year) || 0;
+
+	if (yearB !== yearA) return yearB - yearA;
+
+	return String(b.id).localeCompare(String(a.id));
+}
+
 export function Projects() {
 	const { data, loading } = useProjectsIndex();
 
@@ -81,11 +82,15 @@ export function Projects() {
 
 	const heading = HEADING_BY_FILTER[filter] || 'All Projects';
 	const description = DESCRIPTION_BY_FILTER[filter] || '';
-
 	const activeFilterLabel = FILTERS.find(f => f.key === filter)?.label || 'All';
 
 	const setFilter = next => {
 		const cat = normalizeCat(next);
+		if (cat === filter) {
+			setMobileFiltersOpen(false);
+			return;
+		}
+
 		if (cat === 'all') setSearchParams({}, { replace: true });
 		else setSearchParams({ cat }, { replace: true });
 
@@ -134,51 +139,37 @@ export function Projects() {
 	const prevAmbient = () => setLbIndex(i => (i - 1 + ambientLbImages.length) % ambientLbImages.length);
 	const nextAmbient = () => setLbIndex(i => (i + 1) % ambientLbImages.length);
 
-	const items = useMemo(() => {
+	const allItems = useMemo(() => {
 		const ambientItems = (data.ambient || []).map(a => ({
 			kind: 'ambient',
 			id: a._id,
-			image: a.image,
-			title: a.title,
+			title: a.title || '',
 			year: a.year || null,
 			tag: 'Spatial studies',
+			filterKey: 'spatial-studies',
+			image: a.image,
 		}));
 
 		const projectItems = (data.projects || []).map(p => ({
 			kind: 'project',
 			id: p._id,
-			category: p.category,
-			title: p.title,
+			title: p.title || '',
 			year: p.year || null,
+			tag: p.category === 'exhibition' ? 'Artistic collaborations' : p.tag,
+			filterKey: p.category === 'architecture' ? 'architecture' : p.category === 'product' ? 'product' : p.category === 'exhibition' ? 'artistic-collaborations' : null,
 			slug: p.slug?.current,
 			cover: p.cover,
-			tag: p.category === 'exhibition' ? 'Artistic collaborations' : p.tag,
 		}));
 
-		const sortByYearDesc = (a, b) => {
-			const yearA = Number(a.year) || 0;
-			const yearB = Number(b.year) || 0;
+		return [...projectItems, ...ambientItems].sort(sortByYearDesc);
+	}, [data]);
 
-			if (yearB !== yearA) return yearB - yearA;
-
-			return String(b.id).localeCompare(String(a.id));
-		};
-
-		if (filter === 'all') {
-			return [...projectItems, ...ambientItems].sort(sortByYearDesc);
-		}
-
-		if (filter === 'spatial-studies') {
-			return [...ambientItems].sort(sortByYearDesc);
-		}
-
-		const cat = FILTER_TO_PROJECT_CATEGORY[filter];
-
-		return projectItems.filter(p => p.category === cat).sort(sortByYearDesc);
-	}, [data, filter]);
+	const items = useMemo(() => {
+		if (filter === 'all') return allItems;
+		return allItems.filter(item => item.filterKey === filter);
+	}, [allItems, filter]);
 
 	const total = loading ? null : items.length;
-
 	const mobileFilterOptions = FILTERS.filter(f => f.key !== filter);
 
 	return (
@@ -202,7 +193,6 @@ export function Projects() {
 			</div>
 
 			<div className='relative'>
-				{/* MOBILE FILTER DROPDOWN */}
 				<div className='md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-30'>
 					<motion.div
 						ref={mobileFiltersRef}
@@ -240,7 +230,7 @@ export function Projects() {
 								<motion.div key='mobile-filters' initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2, ease: 'easeOut' }} className='px-4 pb-5'>
 									<div className='flex flex-col items-start'>
 										{mobileFilterOptions.map(f => (
-											<button key={f.key} type='button' onClick={() => setFilter(f.key)} className='w-full py-2 text-center text-nav text-black/80 '>
+											<button key={f.key} type='button' onClick={() => setFilter(f.key)} className='w-full py-2 text-center text-nav text-black/80'>
 												{f.label}
 											</button>
 										))}
@@ -262,68 +252,73 @@ export function Projects() {
 						))}
 					</div>
 				) : (
-					<motion.div className='columns-1 md:columns-2 lg:columns-3 md:[column-gap:2rem]'>
-						<AnimatePresence initial={false}>
-							{items.map(it => {
-								const key = `${it.kind}-${it.id}`;
+					<motion.div
+						key={filter}
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0 }}
+						transition={{ duration: 0.2, ease: 'easeOut' }}
+						className='columns-1 md:columns-2 lg:columns-3 md:[column-gap:2rem]'
+					>
+						{items.map(it => {
+							const key = `${it.kind}-${it.id}`;
 
-								if (it.kind === 'ambient') {
-									return (
-										<motion.div
-											key={key}
-											initial={{ opacity: 0, y: 10 }}
-											animate={{ opacity: 1, y: 0 }}
-											exit={{ opacity: 0, y: -10 }}
-											transition={{ duration: 0.25, ease: 'easeOut' }}
-											className='mb-6 md:mb-10 break-inside-avoid'
-										>
-											<button type='button' onClick={() => openAmbient(it.id)} className='overflow-hidden group block w-full text-left' aria-label='Open image'>
-												<SanityImage
-													image={it.image}
-													preset='card'
-													alt={it.image?.alt || it.title || ''}
-													className='w-full'
-													imgClassName='w-full h-auto object-cover transition-transform duration-[500ms] group-hover:scale-[1.02]'
-													sizes='(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw'
-												/>
-											</button>
-
-											{it.title ? <AnimatedPAfterH1 className='mt-4 text-nav font-[600]'>{it.title}</AnimatedPAfterH1> : null}
-											<AnimatedPAfterH1 className={it.title ? 'md:mt-1 text-sm' : 'mt-4 text-sm'}>{it.tag}</AnimatedPAfterH1>
-										</motion.div>
-									);
-								}
-
-								const href = it.slug ? `/projects/${it.slug}` : '/projects';
-
+							if (it.kind === 'ambient') {
 								return (
 									<motion.div
 										key={key}
 										initial={{ opacity: 0, y: 10 }}
 										animate={{ opacity: 1, y: 0 }}
 										exit={{ opacity: 0, y: -10 }}
-										transition={{ duration: 0.25, ease: 'easeOut' }}
+										transition={{ duration: 0.22, ease: 'easeOut' }}
 										className='mb-6 md:mb-10 break-inside-avoid'
 									>
-										<Link to={href} className='group block'>
-											<div className='overflow-hidden'>
-												<SanityImage
-													image={it.cover}
-													preset='card'
-													alt={it.cover?.alt || it.title || ''}
-													className='w-full'
-													imgClassName='w-full h-auto object-cover transition-transform duration-[500ms] group-hover:scale-[1.02]'
-													sizes='(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw'
-												/>
-											</div>
+										<button type='button' onClick={() => openAmbient(it.id)} className='overflow-hidden group block w-full text-left' aria-label='Open image'>
+											<SanityImage
+												image={it.image}
+												preset='card'
+												alt={it.image?.alt || it.title || ''}
+												className='w-full'
+												imgClassName='w-full h-auto object-cover transition-transform duration-[500ms] group-hover:scale-[1.02]'
+												sizes='(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw'
+											/>
+										</button>
 
-											<AnimatedPAfterH1 className='mt-4 text-nav font-[600]'>{it.title}</AnimatedPAfterH1>
-											<AnimatedPAfterH1 className='md:mt-1 text-sm'>{it.tag}</AnimatedPAfterH1>
-										</Link>
+										{it.title ? <AnimatedPAfterH1 className='mt-4 text-nav font-[600]'>{it.title}</AnimatedPAfterH1> : null}
+										<AnimatedPAfterH1 className={it.title ? 'md:mt-1 text-sm' : 'mt-4 text-sm'}>{it.tag}</AnimatedPAfterH1>
 									</motion.div>
 								);
-							})}
-						</AnimatePresence>
+							}
+
+							const href = it.slug ? `/projects/${it.slug}` : '/projects';
+
+							return (
+								<motion.div
+									key={key}
+									initial={{ opacity: 0, y: 10 }}
+									animate={{ opacity: 1, y: 0 }}
+									exit={{ opacity: 0, y: -10 }}
+									transition={{ duration: 0.22, ease: 'easeOut' }}
+									className='mb-6 md:mb-10 break-inside-avoid'
+								>
+									<Link to={href} className='group block'>
+										<div className='overflow-hidden'>
+											<SanityImage
+												image={it.cover}
+												preset='card'
+												alt={it.cover?.alt || it.title || ''}
+												className='w-full'
+												imgClassName='w-full h-auto object-cover transition-transform duration-[500ms] group-hover:scale-[1.02]'
+												sizes='(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw'
+											/>
+										</div>
+
+										<AnimatedPAfterH1 className='mt-4 text-nav font-[600]'>{it.title}</AnimatedPAfterH1>
+										<AnimatedPAfterH1 className='md:mt-1 text-sm'>{it.tag}</AnimatedPAfterH1>
+									</Link>
+								</motion.div>
+							);
+						})}
 					</motion.div>
 				)}
 			</div>
