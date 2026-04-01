@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useProjectBySlug } from '../hooks/useProjectsSlug.js';
 import { imageUrl } from '../lib/sanity.image.js';
 import { SanityImage } from '../components/SanityImage';
@@ -7,6 +7,7 @@ import { PortableText } from '@portabletext/react';
 import { useMoreWorkSameCategory } from '../hooks/useMoreWorkSameCategory';
 import { Lightbox } from '../components/Lightbox';
 import { AnimatedPAfterH1 } from '../components/AnimatedText.jsx';
+import  CloseSmallIcon  from '../components/Icons/CloseSmallIcon.jsx';
 
 const CATEGORY_LABEL = {
 	architecture: 'Architecture',
@@ -29,6 +30,8 @@ export function ProjectSlug() {
 	const [lbOpen, setLbOpen] = useState(false);
 	const [lbIndex, setLbIndex] = useState(0);
 
+	const navigate = useNavigate();
+
 	const category = data?.category;
 	const images = data?.images || [];
 
@@ -36,6 +39,14 @@ export function ProjectSlug() {
 		slug,
 		category,
 	});
+
+	const handleBack = () => {
+		if (window.history.length > 1) {
+			navigate(-1);
+		} else {
+			navigate('/projects');
+		}
+	};
 
 	const moreTitle = category ? `More ${MORE_LABEL[category] || category}` : 'More work';
 
@@ -56,7 +67,7 @@ export function ProjectSlug() {
 
 	if (loading) {
 		return (
-			<div className='pt-[15vh] md:pt-[20vh] pb-6 md:pb-[7rem] md:px-[7rem] px-6'>
+			<div className='pt-[15vh] md:pt-[25vh] pb-6 md:pb-[7rem] md:px-[7rem] px-6'>
 				<div className='flex flex-col justify-center items-center'>
 					<div className='h-10 w-[18rem] bg-[rgba(0,0,0,0.04)] mb-6' />
 
@@ -94,14 +105,16 @@ export function ProjectSlug() {
 	const isSingle = images.length <= 1;
 
 	return (
-		<div className='pt-[15vh] md:pt-[20vh] pb-6 md:pb-[7rem] md:px-[7rem] px-6'>
+		<div className='pt-[15vh] md:pt-[25vh] pb-6 md:pb-[7rem] md:px-[7rem] px-6'>
 			<div className='flex flex-col justify-center items-center'>
-				<div className='text-lead font-[600] max-w-[23ch] mb-4 md:mb-6 text-center'>{data.title}</div>
+				<div className='text-lead font-[600] max-w-[23ch] mb-4 md:mb-5 text-center'>{data.title}</div>
 
-				<div className='bg-[rgba(0,0,0,0.04)] backdrop-blur-[50px] px-4 py-3 text-nav'>{category ? <div>{CATEGORY_LABEL[category] || category}</div> : null}</div>
+				<button type='button' onClick={handleBack} className='bg-[rgba(0,0,0,0.04)] backdrop-blur-[50px] px-6 py-3 text-nav transition duration-500 hover:bg-[rgba(0,0,0,0.08)] '>
+					{category ? CATEGORY_LABEL[category] || category : 'Back'}
+				</button>
 
-				<div className='mt-8 md:mt-[3rem]'>
-					<div className='lg:w-[560px] mb-2'>{data.description?.length ? <PortableText value={data.description} /> : null}</div>
+				<div className='mt-8 md:mt-16 text-sm'>
+					<div className='lg:w-[560px] mb-2 '>{data.description?.length ? <PortableText value={data.description} /> : null}</div>
 
 					{data.year ? (
 						<div className='flex gap-6'>
@@ -120,7 +133,7 @@ export function ProjectSlug() {
 			</div>
 
 			{/* IMAGES */}
-			<div className='mt-[4rem]'>
+			<div className='mt-24'>
 				{isSingle ? (
 					images[0] ? (
 						<button type='button' onClick={() => openAt(0)} className='block w-full overflow-hidden text-left' aria-label='Open image'>
@@ -128,9 +141,15 @@ export function ProjectSlug() {
 						</button>
 					) : null
 				) : (
-					<div className='columns-1 lg:columns-2 gap-6 md:gap-[3rem]'>
+					<div className='columns-1 lg:columns-2 gap-6 md:gap-[2rem]'>
 						{images.map((img, i) => (
-							<button key={img.asset?._id || i} type='button' onClick={() => openAt(i)} className='mb-6 md:mb-12 break-inside-avoid overflow-hidden block w-full text-left' aria-label={`Open image ${i + 1}`}>
+							<button
+								key={img.asset?._id || i}
+								type='button'
+								onClick={() => openAt(i)}
+								className='mb-6 md:mb-8 break-inside-avoid overflow-hidden block w-full text-left'
+								aria-label={`Open image ${i + 1}`}
+							>
 								<SanityImage
 									image={img}
 									preset='detail'
@@ -155,7 +174,7 @@ export function ProjectSlug() {
 					<hr className='border-[rgba(0,0,0,0.1)] mb-10' />
 					<AnimatedPAfterH1 className='text-center text-nav mb-10'>{moreTitle}</AnimatedPAfterH1>
 
-					<div className='grid grid-cols-2 md:grid-cols-4 md:gap-10 gap-6 items-start'>
+					<div className='grid grid-cols-2 md:grid-cols-4 md:gap-8 gap-6 items-start'>
 						{moreWork.map(p => (
 							<div key={p._id} className='text-center'>
 								<Link to={p.slug?.current ? `/projects/${p.slug.current}` : '/projects'} className='group block'>

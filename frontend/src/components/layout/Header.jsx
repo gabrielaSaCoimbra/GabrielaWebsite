@@ -56,7 +56,7 @@ export function Header() {
 					transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
 				>
 					{/* Top bar */}
-					<div className='h-11 px-4 flex items-center justify-between'>
+					<div className='h-11 px-5 flex items-center justify-between'>
 						<NavLink to='/' className='text-nav  text-black/80  transition duration-500'>
 							Gabriela Sá Coimbra
 						</NavLink>
@@ -82,7 +82,7 @@ export function Header() {
 						</button>
 					</div>
 
-					<div className='px-4 pb-5'>
+					<div className='px-5 pb-5'>
 						<AnimatePresence initial={false}>
 							{open && (
 								<motion.div key='menu' initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.25, ease: 'easeOut' }} className='pt-5 '>

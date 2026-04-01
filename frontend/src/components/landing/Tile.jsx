@@ -20,7 +20,7 @@ export function Tile({ to, imageData, label, className = '', loading = 'lazy' })
 				<div className='absolute inset-0 grid place-items-center pointer-events-none'>
 					<span
 						className='text-center
-							bg-[rgba(0,0,0,0.04)] backdrop-blur-[50px] px-4 py-3 text-nav
+							bg-[rgba(0,0,0,0.04)] backdrop-blur-[50px] px-6 py-3 text-nav
 							text-black/80
 							opacity-0 translate-y-[6px]
 							transition-[opacity,transform] duration-[900ms]

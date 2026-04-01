@@ -1,8 +1,11 @@
 import { useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatedPAfterH1 } from '../components/AnimatedText';
 import { Link } from 'react-router-dom';
 import { useArchiveIndex } from '../hooks/useArchiveIndex';
 import { SanityImage } from '../components/SanityImage';
+import { Lightbox } from '../components/Lightbox';
+import { imageUrl } from '../lib/sanity.image';
 import GridViewIcon3 from '../components/Icons/GridViewIcon3';
 import GridViewIcon4 from '../components/Icons/GridViewIcon4';
 import ListViewIcon from '../components/Icons/ListViewIcon';
@@ -16,15 +19,7 @@ const CATEGORY_LABEL = {
 
 function ViewButton({ active, children, onClick, label }) {
 	return (
-		<button
-			type='button'
-			onClick={onClick}
-			aria-label={label}
-			className={['bg-[rgba(0,0,0,0.04)] backdrop-blur-[50px] px-4 py-3 text-nav transition duration-500', active ? 'text-black' : 'text-black/60 hover:text-black hover:bg-[rgba(0,0,0,0.1)]'].join(
-				' ',
-			)}
-			disabled={active}
-		>
+		<button type='button' onClick={onClick} aria-label={label} className={['transition duration-500', active ? 'text-black' : 'text-black/60 hover:text-black '].join(' ')} disabled={active}>
 			{children}
 		</button>
 	);
@@ -35,6 +30,9 @@ export function Archive() {
 
 	const [view, setView] = useState('grid3');
 	const [activeId, setActiveId] = useState(null);
+
+	const [lbOpen, setLbOpen] = useState(false);
+	const [lbIndex, setLbIndex] = useState(0);
 
 	const items = useMemo(() => {
 		const ambientItems = (data.ambient || []).map(a => ({
@@ -66,16 +64,40 @@ export function Archive() {
 
 	const activeItem = useMemo(() => items.find(i => i.id === activeId) || null, [items, activeId]);
 
-	const gridColsClass = view === 'grid3' ? 'columns-1 md:columns-2 lg:columns-3 [column-gap:3rem]' : 'columns-1 md:columns-2 lg:columns-4 [column-gap:3rem]';
+	const ambientLbImages = useMemo(() => {
+		return (data.ambient || []).map(a => ({
+			src: imageUrl(a.image, 'lightbox'),
+			alt: a.image?.alt || a.title || '',
+		}));
+	}, [data.ambient]);
+
+	const ambientIndexById = useMemo(() => {
+		const map = new Map();
+		(data.ambient || []).forEach((a, idx) => map.set(a._id, idx));
+		return map;
+	}, [data.ambient]);
+
+	const openAmbient = ambientId => {
+		const idx = ambientIndexById.get(ambientId);
+		if (idx === undefined) return;
+		setLbIndex(idx);
+		setLbOpen(true);
+	};
+
+	const prevAmbient = () => setLbIndex(i => (i - 1 + ambientLbImages.length) % ambientLbImages.length);
+	const nextAmbient = () => setLbIndex(i => (i + 1) % ambientLbImages.length);
+
+	const gridColsClass = view === 'grid3' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-8' : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-8';
 
 	const gridSizes = view === 'grid4' ? '(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 25vw' : '(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw';
 
 	return (
-		<div className='pt-[15vh] md:pt-[20vh] pb-6 md:pb-[7rem] md:px-[7rem] px-6'>
-			<div className='text-lead text-center font-[600] text-black/80 mb-[3.5rem]'>Archive {total !== null ? <span className='text-black/40'>{total}</span> : null}</div>
+		<div className='pt-[15vh] md:pt-[25vh] pb-6 md:pb-[7rem] md:px-[7rem] px-6'>
+			<div className='text-lead text-center font-[600] text-black/80 '>Archive {total !== null ? <span className='text-black/40'>{total}</span> : null}</div>
 
-			<aside className='fixed bottom-6 left-1/2 -translate-x-1/2 z-20'>
-				<div className='flex gap-2'>
+
+			<aside className='mt-10 w-full flex justify-center mb-[5rem]'>
+				<div className='bg-[rgba(0,0,0,0.04)] backdrop-blur-[50px] transition duration-500 flex gap-4 px-6 py-3'>
 					<ViewButton label='Grid 3 columns' active={view === 'grid3'} onClick={() => setView('grid3')}>
 						<GridViewIcon3 size={22} color='currentColor' />
 					</ViewButton>
@@ -91,9 +113,9 @@ export function Archive() {
 			</aside>
 
 			{loading ? (
-				<div className='columns-1 md:columns-2 lg:columns-3 [column-gap:3rem]'>
+				<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
 					{[320, 420, 280, 380, 500, 340, 460, 300, 390].map((h, i) => (
-						<div key={i} className='mb-10 break-inside-avoid'>
+						<div key={i}>
 							<div className='bg-[rgba(0,0,0,0.04)]' style={{ height: `${h}px` }} />
 							<div className='mt-4 h-4 w-40 bg-[rgba(0,0,0,0.04)]' />
 							<div className='mt-2 h-3 w-24 bg-[rgba(0,0,0,0.04)]' />
@@ -101,43 +123,9 @@ export function Archive() {
 					))}
 				</div>
 			) : (
-				<>
-					{view !== 'list' ? (
-						<motion.div className={gridColsClass}>
-							<AnimatePresence initial={false}>
-								{items.map(it => (
-									<motion.div
-										key={`${it.kind}-${it.id}`}
-										initial={{ opacity: 0, y: 10 }}
-										animate={{ opacity: 1, y: 0 }}
-										exit={{ opacity: 0, y: -10 }}
-										transition={{ duration: 0.22, ease: 'easeOut' }}
-										className='mb-10 break-inside-avoid'
-									>
-										{it.href ? (
-											<Link to={it.href} className='group block'>
-												<div className='overflow-hidden bg-border/20'>
-													<SanityImage
-														image={it.thumb}
-														preset='card'
-														alt={it.thumb?.alt || it.title || ''}
-														className='w-full'
-														imgClassName='w-full h-auto object-cover transition-transform duration-[900ms] group-hover:scale-[1.02]'
-														sizes={gridSizes}
-													/>
-												</div>
-											</Link>
-										) : (
-											<div className='overflow-hidden bg-border/20'>
-												<SanityImage image={it.thumb} preset='card' alt={it.thumb?.alt || it.title || ''} className='w-full' imgClassName='w-full h-auto object-cover' sizes={gridSizes} />
-											</div>
-										)}
-									</motion.div>
-								))}
-							</AnimatePresence>
-						</motion.div>
-					) : (
-						<div className='relative'>
+				<AnimatePresence mode='wait' initial={false}>
+					{view === 'list' ? (
+						<motion.div key='list' initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2, ease: 'easeOut' }} className='relative'>
 							<div className='hidden lg:block fixed right-[7rem] top-[30vh] z-10 w-[380px] pointer-events-none'>
 								<AnimatePresence mode='wait'>
 									{activeItem?.thumb ? (
@@ -196,17 +184,65 @@ export function Archive() {
 											{RowInner}
 										</Link>
 									) : (
-										<div key={it.id}>{RowInner}</div>
+										<button key={it.id} type='button' onClick={() => openAmbient(it.id)} className='block w-full text-left'>
+											{RowInner}
+										</button>
 									);
 								})}
 							</div>
 
 							<div className='border-t border-black' />
 							<div className='hidden lg:block h-10' />
-						</div>
+						</motion.div>
+					) : (
+						<motion.div key='grid' initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2, ease: 'easeOut' }}>
+							<motion.div layout className={gridColsClass} transition={{ layout: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } }}>
+								{items.map(it => (
+									<motion.div
+										layout
+										key={`${it.kind}-${it.id}`}
+										transition={{
+											layout: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
+											opacity: { duration: 0.2, ease: 'easeOut' },
+										}}
+										className='min-w-0'
+									>
+										{it.href ? (
+											<Link to={it.href} className='group block'>
+												<div className='aspect-[4/3] overflow-hidden bg-border/20'>
+													<SanityImage
+														image={it.thumb}
+														preset='card'
+														alt={it.thumb?.alt || it.title || ''}
+														className='w-full h-full'
+														imgClassName='w-full h-full object-cover transition-transform duration-[900ms] group-hover:scale-[1.02]'
+														sizes={gridSizes}
+													/>
+												</div>
+											</Link>
+										) : (
+											<button type='button' onClick={() => openAmbient(it.id)} className='group block w-full text-left' aria-label='Open image'>
+												<div className='aspect-[4/3] overflow-hidden bg-border/20'>
+													<SanityImage
+														image={it.thumb}
+														preset='card'
+														alt={it.thumb?.alt || it.title || ''}
+														className='w-full h-full'
+														imgClassName='w-full h-full object-cover transition-transform duration-[900ms] group-hover:scale-[1.02]'
+														sizes={gridSizes}
+													/>
+												</div>
+											</button>
+										)}
+									</motion.div>
+								))}
+							</motion.div>
+						</motion.div>
 					)}
-				</>
+				</AnimatePresence>
 			)}
+
+			<Lightbox open={lbOpen} onClose={() => setLbOpen(false)} images={ambientLbImages} index={lbIndex} onPrev={prevAmbient} onNext={nextAmbient} />
 		</div>
 	);
 }

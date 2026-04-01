@@ -19,7 +19,7 @@ export function SanityImage({ image, preset = 'card', alt = '', className = '', 
 
 	return (
 		<div className={`relative overflow-hidden ${className}`} style={hasRatio ? { aspectRatio } : undefined}>
-			<div className={['absolute inset-0 bg-[rgba(0,0,0,0.04)] transition-opacity duration-500', loaded ? 'opacity-0' : 'opacity-100'].join(' ')} aria-hidden='true' />
+			<div className={['absolute inset-0 bg-[rgba(0,0,0,0.04)] transition-opacity duration-100', loaded ? 'opacity-0' : 'opacity-100'].join(' ')} aria-hidden='true' />
 
 			<img
 				src={src}

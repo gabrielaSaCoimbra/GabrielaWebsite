@@ -51,7 +51,7 @@ function FilterButton({ active, children, onClick }) {
 			type='button'
 			onClick={onClick}
 			className={[
-				'bg-[rgba(0,0,0,0.04)] backdrop-blur-[50px] px-4 py-3 text-nav transition duration-500',
+				'bg-[rgba(0,0,0,0.04)] backdrop-blur-[50px] px-6 py-3 text-nav transition duration-500',
 				active ? 'text-black bg-[rgba(0,0,0,0.1)]' : 'text-black/60 hover:text-black hover:bg-[rgba(0,0,0,0.1)]',
 			].join(' ')}
 			disabled={active}
@@ -166,13 +166,13 @@ export function Projects() {
 	const mobileFilterOptions = FILTERS.filter(f => f.key !== filter);
 
 	return (
-		<div className='pt-[15vh] md:pt-[20vh] pb-[4rem] md:pb-[7rem] md:px-[7rem] px-6'>
-			<div className='mb-[3.5rem] flex flex-col gap-4 justify-center items-center'>
+		<div className='pt-[15vh] md:pt-[25vh] pb-[4rem] md:pb-[7rem] md:px-[7rem] px-6'>
+			<div className='mb-[4rem] flex flex-col gap-5  justify-center items-center'>
 				<div className='text-lead font-[600] text-black/80'>
 					{heading} {total !== null ? <span className='text-black/40'>{total}</span> : null}
 				</div>
 
-				{description ? <AnimatedPAfterH1 className='max-w-[80ch] text-sm'>{description}</AnimatedPAfterH1> : null}
+				{description ? <div className='max-w-[75ch] text-sm'>{description}</div> : null}
 
 				<div className='hidden md:block mt-6'>
 					<div className='flex gap-2'>
@@ -246,7 +246,7 @@ export function Projects() {
 						))}
 					</div>
 				) : (
-					<motion.div className='columns-1 md:columns-2 lg:columns-3  md:[column-gap:3rem]'>
+					<motion.div className='columns-1 md:columns-2 lg:columns-3  md:[column-gap:2rem]'>
 						<AnimatePresence initial={false}>
 							{items.map(it => {
 								const key = `${it.kind}-${it.id}`;
@@ -261,13 +261,13 @@ export function Projects() {
 											transition={{ duration: 0.25, ease: 'easeOut' }}
 											className='mb-6 md:mb-10 break-inside-avoid'
 										>
-											<button type='button' onClick={() => openAmbient(it.id)} className='overflow-hidden  block w-full text-left' aria-label='Open image'>
+											<button type='button' onClick={() => openAmbient(it.id)} className='overflow-hidden group block w-full text-left' aria-label='Open image'>
 												<SanityImage
 													image={it.image}
 													preset='card'
 													alt={it.image?.alt || it.title || ''}
 													className='w-full'
-													imgClassName='w-full h-auto object-cover'
+													imgClassName='w-full h-auto object-cover transition-transform duration-[500ms] group-hover:scale-[1.02]'
 													sizes='(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw'
 												/>
 											</button>
