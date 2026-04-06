@@ -3,14 +3,13 @@ import { NavLink } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { LocalImage } from '../components/LocalImage';
 
-import img1 from '/9.jpg';
-import img2 from '/Cave.jpg';
-import img3 from '/site2.jpg';
-import img4 from '/Sala_1.jpg';
-import img5 from '/Sala_1.jpg';
-import img6 from '/Sala_1.jpg';
+import img1 from '/public/AboutImgs/1.jpg';
+import img2 from '/public/AboutImgs/2.jpg';
+import img3 from '/public/AboutImgs/3.jpg';
+import img4 from '/public/AboutImgs/4.jpg';
+import img5 from '/public/AboutImgs/5.jpg';
+import img6 from '/public/AboutImgs/6.jpg';
 import bgImage from '/ok.jpg';
-import { Link } from 'react-router';
 
 const IMAGES = [
 	{ src: img1, alt: '' },
