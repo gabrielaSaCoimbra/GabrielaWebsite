@@ -2,13 +2,11 @@ import site1 from '/ImgHomePage/HOMEPAGE1.webp';
 import site2 from '/ImgHomePage/HOMEPAGE2.webp';
 import site3 from '/ImgHomePage/HOMEPAGE3.webp';
 import site4 from '/ImgHomePage/HOMEPAGE4.webp';
-import site5 from '/ImgHomePage/HOMEPAGE5.webp';
 
 import mobile1 from '/ImgHomePage/MOBILE1.webp';
 import mobile2 from '/ImgHomePage/MOBILE2.webp';
 import mobile3 from '/ImgHomePage/MOBILE3.webp';
 import mobile4 from '/ImgHomePage/MOBILE4.webp';
-import mobile5 from '/ImgHomePage/MOBILE5.webp';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, EffectFade } from 'swiper/modules';
@@ -20,7 +18,6 @@ const desktopImages = [
 	{ src: site2, alt: 'Hero image 2' },
 	{ src: site3, alt: 'Hero image 3' },
 	{ src: site4, alt: 'Hero image 4' },
-	{ src: site5, alt: 'Hero image 5' },
 ];
 
 const mobileImages = [
@@ -28,7 +25,6 @@ const mobileImages = [
 	{ src: mobile2, alt: 'Hero image 2' },
 	{ src: mobile3, alt: 'Hero image 3' },
 	{ src: mobile4, alt: 'Hero image 4' },
-	{ src: mobile5, alt: 'Hero image 5' },
 ];
 
 function HeroSwiper({ images, priority = 'desktop' }) {
@@ -50,7 +46,7 @@ function HeroSwiper({ images, priority = 'desktop' }) {
 		>
 			{images.map((image, index) => (
 				<SwiperSlide key={index}>
-					<div className='relative w-full h-full overflow-hidden'>
+					<div className='relative w-full h-full overflow-hidden pointer-events-none'>
 						<img
 							src={image.src}
 							alt={image.alt}
@@ -75,7 +71,7 @@ export function HeroGallery() {
 			</div>
 
 			{/* MOBILE */}
-			<div className='block md:hidden h-[50vh] mt-[100px]'>
+			<div className='block md:hidden h-[60vh] mt-[100px]'>
 				<HeroSwiper images={mobileImages} />
 			</div>
 		</section>
