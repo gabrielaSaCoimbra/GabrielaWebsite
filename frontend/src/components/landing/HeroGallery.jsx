@@ -1,7 +1,7 @@
 import site1 from '/ImgHomePage/HOMEPAGE1.webp';
 import site2 from '/ImgHomePage/HOMEPAGE2.webp';
-import site3 from '/ImgHomePage/HOMEPAGE3.webp';
-import site4 from '/ImgHomePage/HOMEPAGE4.webp';
+import site3 from '/ImgHomePage/HOMEPAGE4.webp';
+import site4 from '/ImgHomePage/HOMEPAGE5.webp';
 
 import mobile1 from '/ImgHomePage/MOBILE1.webp';
 import mobile2 from '/ImgHomePage/MOBILE2.webp';
@@ -66,7 +66,7 @@ export function HeroGallery() {
 	return (
 		<section className='w-screen md:mt-[10vh] -z-10'>
 			{/* DESKTOP */}
-			<div className='hidden md:block h-[90vh]'>
+			<div className='hidden md:block h-auto'>
 				<HeroSwiper images={desktopImages} />
 			</div>
 
