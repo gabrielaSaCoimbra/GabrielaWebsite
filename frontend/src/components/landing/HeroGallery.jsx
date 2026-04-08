@@ -71,7 +71,7 @@ export function HeroGallery() {
 			</div>
 
 			{/* MOBILE */}
-			<div className='block md:hidden h-[60vh] '>
+			<div className='block md:hidden h-[60vh] mt-[100px]'>
 				<HeroSwiper images={mobileImages} />
 			</div>
 		</section>
