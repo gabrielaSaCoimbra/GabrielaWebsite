@@ -132,7 +132,7 @@ export function ProjectSlug() {
 			</div>
 
 			{/* IMAGES */}
-			<div className='mt-24'>
+			<div className='mt-12 lg:mt-24'>
 				{isSingle ? (
 					images[0] ? (
 						<button type='button' onClick={() => openAt(0)} className='block w-full group overflow-hidden text-left' aria-label='Open image'>
@@ -177,7 +177,7 @@ export function ProjectSlug() {
 
 			{/* MORE WORK */}
 			{!moreLoading && moreWork.length > 0 ? (
-				<div className='mt-[4rem] md:mt-[6rem]'>
+				<div className='mt-[3rem] md:mt-[6rem]'>
 					<hr className='border-[rgba(0,0,0,0.1)] mb-10' />
 					<AnimatedPAfterH1 className='text-center text-nav mb-10'>{moreTitle}</AnimatedPAfterH1>
 

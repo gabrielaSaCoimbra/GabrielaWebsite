@@ -174,7 +174,7 @@ export function Projects() {
 
 	return (
 		<div className='pt-[15vh] md:pt-[25vh] pb-[4rem] md:pb-[6rem] md:px-[7rem] px-6'>
-			<div className='mb-[4rem] flex flex-col gap-5 justify-center items-center'>
+			<div className='mb-[2rem] lg:mb-[4rem] flex flex-col gap-5 justify-center items-center'>
 				<div className='text-lead font-[600] text-black/80'>
 					{heading} {total !== null ? <span className='text-black/40'>{total}</span> : null}
 				</div>
@@ -193,15 +193,15 @@ export function Projects() {
 			</div>
 
 			<div className='relative'>
-				<div className='md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-30'>
+				<div className='md:hidden fixed bottom-3 right-6 left-6 z-30'>
 					<motion.div
 						ref={mobileFiltersRef}
 						initial={false}
 						animate={mobileFiltersOpen ? 'open' : 'closed'}
-						className='pointer-events-auto w-[230px] overflow-hidden bg-[rgba(0,0,0,0.04)] backdrop-blur-[50px]'
+						className='pointer-events-auto w-full overflow-hidden bg-[rgba(0,0,0,0.04)] backdrop-blur-[50px]'
 						variants={{
 							closed: { height: 44 },
-							open: { height: 44 + mobileFilterOptions.length * 38 },
+							open: { height: 44 + mobileFilterOptions.length * 37.5 },
 						}}
 						transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
 					>
@@ -210,7 +210,7 @@ export function Projects() {
 							onClick={() => setMobileFiltersOpen(v => !v)}
 							aria-expanded={mobileFiltersOpen}
 							aria-label={mobileFiltersOpen ? 'Close filters' : 'Open filters'}
-							className='h-11 w-full px-4 flex items-center justify-between text-nav text-black/80'
+							className='h-11 w-full px-5 flex items-center justify-between text-nav text-black/80'
 						>
 							<span>{activeFilterLabel}</span>
 
@@ -227,7 +227,7 @@ export function Projects() {
 
 						<AnimatePresence initial={false}>
 							{mobileFiltersOpen && (
-								<motion.div key='mobile-filters' initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2, ease: 'easeOut' }} className='px-4 pb-5'>
+								<motion.div key='mobile-filters' initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2, ease: 'easeOut' }} className='px-4 pb-4'>
 									<div className='flex flex-col items-start'>
 										{mobileFilterOptions.map(f => (
 											<button key={f.key} type='button' onClick={() => setFilter(f.key)} className='w-full py-2 text-center text-nav text-black/80'>
@@ -284,8 +284,16 @@ export function Projects() {
 											/>
 										</button>
 
-										{it.title ? <AnimatedPAfterH1 className='mt-4 text-nav font-[600]'>{it.title}</AnimatedPAfterH1> : null}
-										<AnimatedPAfterH1 className={it.title ? 'md:mt-1 text-sm' : 'mt-4 text-sm'}>{it.tag}</AnimatedPAfterH1>
+										{it.title ? (
+											<div>
+												<AnimatedPAfterH1 className='hidden lg:block mt-4 text-nav font-[600]'>{it.title}</AnimatedPAfterH1>
+												<div className='lg:hidden block mt-4 text-nav font-[600]'>{it.title}</div>
+											</div>
+										) : null}
+										<div>
+											<AnimatedPAfterH1 className={it.title ? 'md:mt-1 text-sm' : 'mt-4 text-sm'}>{it.tag}</AnimatedPAfterH1>
+											
+										</div>
 									</motion.div>
 								);
 							}
@@ -313,8 +321,11 @@ export function Projects() {
 											/>
 										</div>
 
-										<AnimatedPAfterH1 className='mt-4 text-nav font-[600]'>{it.title}</AnimatedPAfterH1>
-										<AnimatedPAfterH1 className='md:mt-1 text-sm'>{it.tag}</AnimatedPAfterH1>
+										<AnimatedPAfterH1 className='hidden lg:block mt-4 text-nav font-[600]'>{it.title}</AnimatedPAfterH1>
+										<div className='lg:hidden block mt-4 text-nav font-[600]'>{it.title}</div>
+
+										<AnimatedPAfterH1 className='hidden lg:block md:mt-1 text-sm'>{it.tag}</AnimatedPAfterH1>
+										<div className='block lg:hidden md:mt-1 text-sm'>{it.tag}</div>
 									</Link>
 								</motion.div>
 							);

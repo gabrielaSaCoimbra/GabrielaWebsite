@@ -15,9 +15,9 @@ export function Tile({ to, imageData, label, className = '', loading = 'lazy' })
 					sizes='(max-width: 767px) 100vw, 42vw'
 				/>
 
-				<div className='absolute inset-0 bg-black/0 transition-colors duration-[900ms] ease-[cubic-bezier(.22,1,.36,1)] group-hover:bg-black/5' />
+				<div className='hidden lg:block absolute inset-0 bg-black/0 transition-colors duration-[900ms] ease-[cubic-bezier(.22,1,.36,1)] group-hover:bg-black/5' />
 
-				<div className='absolute inset-0 grid place-items-center pointer-events-none'>
+				<div className='hidden lg:grid absolute inset-0  place-items-center pointer-events-none'>
 					<span
 						className='text-center
 							bg-[rgba(0,0,0,0.04)] backdrop-blur-[50px] px-6 py-3 text-nav
@@ -29,6 +29,13 @@ export function Tile({ to, imageData, label, className = '', loading = 'lazy' })
 					>
 						{label}
 					</span>
+				</div>
+
+				<div className='lg:hidden absolute inset-0 place-content-center flex items-center '>
+						<button className='bg-[rgba(0,0,0,0.04)] backdrop-blur-[50px] px-6 py-3 text-nav'>{label}</button>
+
+						
+				
 				</div>
 			</div>
 		</Link>
