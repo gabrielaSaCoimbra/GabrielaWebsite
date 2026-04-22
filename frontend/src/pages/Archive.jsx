@@ -1,6 +1,5 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { AnimatedPAfterH1 } from '../components/AnimatedText';
 import { Link } from 'react-router-dom';
 import { useArchiveIndex } from '../hooks/useArchiveIndex';
 import { SanityImage } from '../components/SanityImage';
@@ -9,6 +8,7 @@ import { imageUrl } from '../lib/sanity.image';
 import GridViewIcon3 from '../components/Icons/GridViewIcon3';
 import GridViewIcon4 from '../components/Icons/GridViewIcon4';
 import ListViewIcon from '../components/Icons/ListViewIcon';
+import Grid1Mobile from '../components/Icons/Grid1Mobile';
 
 const CATEGORY_LABEL = {
 	architecture: 'Architecture',
@@ -26,6 +26,7 @@ function ViewButton({ active, children, onClick, label }) {
 }
 
 export function Archive() {
+	const [isMobile, setIsMobile] = useState(false);
 	const { data, loading } = useArchiveIndex();
 
 	const [view, setView] = useState('grid3');
@@ -33,6 +34,17 @@ export function Archive() {
 
 	const [lbOpen, setLbOpen] = useState(false);
 	const [lbIndex, setLbIndex] = useState(0);
+
+	useEffect(() => {
+		const checkIsMobile = () => {
+			setIsMobile(window.innerWidth < 1024);
+		};
+
+		checkIsMobile();
+		window.addEventListener('resize', checkIsMobile);
+
+		return () => window.removeEventListener('resize', checkIsMobile);
+	}, []);
 
 	const items = useMemo(() => {
 		const ambientItems = (data.ambient || []).map(a => ({
@@ -94,16 +106,16 @@ export function Archive() {
 	const prevAmbient = () => setLbIndex(i => (i - 1 + ambientLbImages.length) % ambientLbImages.length);
 	const nextAmbient = () => setLbIndex(i => (i + 1) % ambientLbImages.length);
 
-	const gridColsClass = view === 'grid3' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-8' : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-8';
+	const gridColsClass =
+		view === 'grid3' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 md:gap-x-8 gap-y-6 md:gap-y-8' : 'grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-x-4 md:gap-x-8 gap-y-4 md:gap-y-8';
 
-	const gridSizes = view === 'grid4' ? '(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 25vw' : '(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw';
+	const gridSizes = view === 'grid4' ? '(max-width: 767px) 50vw, (max-width: 1023px) 50vw, 25vw' : '(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw';
 
 	return (
 		<div className='pt-[15vh] md:pt-[25vh] pb-6 md:pb-[6rem] md:px-[7rem] px-6'>
-			<div className='text-lead text-center font-[600] text-black/80 '>Archive {total !== null ? <span className='text-black/40'>{total}</span> : null}</div>
+			<div className='text-lead text-center font-[600] text-black/80 md:mb-0 mb-[3rem]'>Archive {total !== null ? <span className='text-black/40'>{total}</span> : null}</div>
 
-
-			<aside className='mt-10 w-full flex justify-center mb-[5rem]'>
+			<aside className='hidden md:flex mt-10 w-full justify-center mb-[5rem]'>
 				<div className='bg-[rgba(0,0,0,0.04)] backdrop-blur-[50px] transition duration-500 flex gap-4 px-6 py-3'>
 					<ViewButton label='Grid 3 columns' active={view === 'grid3'} onClick={() => setView('grid3')}>
 						<GridViewIcon3 size={22} color='currentColor' />
@@ -118,6 +130,24 @@ export function Archive() {
 					</ViewButton>
 				</div>
 			</aside>
+
+			<div className='fixed md:hidden z-50 bottom-3 right-6 left-6'>
+				<div className='flex justify-center '>
+					<div className='bg-[rgba(0,0,0,0.04)] backdrop-blur-[50px] transition duration-500 flex gap-4 px-6 py-3'>
+						<ViewButton label='Grid 3 columns' active={view === 'grid3'} onClick={() => setView('grid3')}>
+							<Grid1Mobile size={22} color='currentColor' />
+						</ViewButton>
+
+						<ViewButton label='Grid 4 columns' active={view === 'grid4'} onClick={() => setView('grid4')}>
+							<GridViewIcon3 size={22} color='currentColor' />
+						</ViewButton>
+
+						<ViewButton label='List view' active={view === 'list'} onClick={() => setView('list')}>
+							<ListViewIcon size={22} color='currentColor' />
+						</ViewButton>
+					</div>
+				</div>
+			</div>
 
 			{loading ? (
 				<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
@@ -158,15 +188,30 @@ export function Archive() {
 
 									const RowInner = (
 										<motion.div
-											onMouseEnter={() => setActiveId(it.id)}
-											onMouseLeave={() => setActiveId(null)}
-											className='grid grid-cols-9 gap-6 py-4 items-center'
-											animate={{ x: isActive ? 10 : 0 }}
+											onMouseEnter={() => {
+												if (!isMobile) setActiveId(it.id);
+											}}
+											onMouseLeave={() => {
+												if (!isMobile) setActiveId(null);
+											}}
+											className=''
+											animate={{ x: !isMobile && isActive ? 10 : 0 }}
 											transition={{ duration: 0.18, ease: 'easeOut' }}
 										>
-											<div className='col-span-4 text-nav font-[600]'>{it.title || ''}</div>
-											<div className='col-span-4 text-navLight opacity-80'>{it.tag}</div>
-											<div className='col-span-1 text-navLight opacity-80 text-right'>{it.year ? it.year : ''}</div>
+											<div className='hidden md:grid grid-cols-9 gap-6 py-4 items-center'>
+												<div className='col-span-4 text-nav font-[600] '>{it.title || ''} </div>
+												<div className='col-span-4 text-navLight opacity-80 '>{it.tag}</div>
+												<div className='col-span-1 text-navLight opacity-80 text-right '>{it.year ? it.year : ''}</div>
+											</div>
+
+											<div className='grid md:hidden grid-cols-4 gap-6 py-2 items-baseline '>
+												<div className='col-span-3'>
+													<div className='text-nav font-[600] '>{it.title || ''} </div>
+													<div className='text-navLight opacity-80 pt-3'>{it.tag}</div>
+												</div>
+
+												<div className='col-span-1 text-navLight opacity-80 text-right '>{it.year ? it.year : ''}</div>
+											</div>
 
 											<div className='col-span-12 lg:hidden pt-4'>
 												<AnimatePresence>

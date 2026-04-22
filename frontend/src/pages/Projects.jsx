@@ -174,7 +174,7 @@ export function Projects() {
 
 	return (
 		<div className='pt-[15vh] md:pt-[25vh] pb-[4rem] md:pb-[6rem] md:px-[7rem] px-6'>
-			<div className='mb-[2rem] lg:mb-[4rem] flex flex-col gap-5 justify-center items-center'>
+			<div className='mb-[3rem] lg:mb-[4rem] flex flex-col gap-5 justify-center items-center'>
 				<div className='text-lead font-[600] text-black/80'>
 					{heading} {total !== null ? <span className='text-black/40'>{total}</span> : null}
 				</div>

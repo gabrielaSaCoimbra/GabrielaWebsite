@@ -108,7 +108,7 @@ export function ProjectSlug() {
 			<div className='flex flex-col justify-center items-center'>
 				<div className='text-lead font-[600] max-w-[23ch] mb-4 md:mb-5 text-center'>{data.title}</div>
 
-				<button type='button' onClick={handleBack} className='bg-[rgba(0,0,0,0.04)] backdrop-blur-[50px] px-6 py-3 text-nav transition duration-500 hover:bg-[rgba(0,0,0,0.08)] '>
+				<button type='button' onClick={handleBack} className='bg-[rgba(0,0,0,0.04)] backdrop-blur-[50px] px-5 py-2 lg:px-6 lg:py-3 lg:text-nav text-[0.8rem] font-[600] transition duration-500 hover:bg-[rgba(0,0,0,0.08)] '>
 					{category ? CATEGORY_LABEL[category] || category : 'Back'}
 				</button>
 

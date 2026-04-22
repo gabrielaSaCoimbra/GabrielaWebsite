@@ -28,9 +28,12 @@ export default {
 			fontSize: {
 				h1: ['clamp(2.25rem, 1.5vw, 4rem)', { lineHeight: '1', letterSpacing: '-0.02em' }],
 				lead: ['clamp(1.25rem, 4.1vw, 3.2rem)', { lineHeight: '1.1', letterSpacing: '-0.02em' }],
+				about: ['clamp(1.2rem, 3.5vw, 2.7rem)', { lineHeight: '1.2', letterSpacing: '-0.02em' }],
+				quote: ['clamp(2rem, 4.1vw, 4rem)', { lineHeight: '1.1', letterSpacing: '-0.02em' }],
+
 				lead2: ['clamp(1.25rem, 4.5vw, 4.5rem)', { lineHeight: '1' }],
 				nav: ['1rem', { lineHeight: '1.2', fontWeight: '600' }],
-				navLight: ['1.1rem', { lineHeight: '1.2', fontWeight: '400', letterSpacing: '-0.05em' }],
+				navLight: ['0.9rem', { lineHeight: '0', fontWeight: '400', letterSpacing: '-0.05em' }],
 				label: ['0.7rem', { lineHeight: '1.2', letterSpacing: '0.08em' }],
 			},
 		},
