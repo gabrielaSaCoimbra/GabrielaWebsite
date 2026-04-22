@@ -64,14 +64,12 @@ function HeroSwiper({ images, priority = 'desktop' }) {
 
 export function HeroGallery() {
 	return (
-		<section className='w-screen  -z-10'>
-			{/* DESKTOP */}
-			<div className='hidden md:block h-auto'>
+		<section className='w-screen'>
+			<div className='hidden md:block w-full aspect-[18/10]'>
 				<HeroSwiper images={desktopImages} />
 			</div>
 
-			{/* MOBILE */}
-			<div className='block md:hidden h-[60vh] mt-[100px]'>
+			<div className='block md:hidden w-full aspect-[9/10] mt-[100px]'>
 				<HeroSwiper images={mobileImages} />
 			</div>
 		</section>
