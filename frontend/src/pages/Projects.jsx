@@ -83,6 +83,7 @@ export function Projects() {
 	const heading = HEADING_BY_FILTER[filter] || 'All Projects';
 	const description = DESCRIPTION_BY_FILTER[filter] || '';
 	const activeFilterLabel = FILTERS.find(f => f.key === filter)?.label || 'All';
+	const mobileActiveFilterLabel = filter === 'all' ? 'All categories' : activeFilterLabel;
 
 	const setFilter = next => {
 		const cat = normalizeCat(next);
@@ -212,7 +213,9 @@ export function Projects() {
 							aria-label={mobileFiltersOpen ? 'Close filters' : 'Open filters'}
 							className='h-11 w-full px-5 flex items-center justify-between text-nav text-black/80'
 						>
-							<span>{activeFilterLabel}</span>
+							<span>
+								<span>{mobileActiveFilterLabel}</span>
+							</span>
 
 							<div className='relative h-4 w-4'>
 								<motion.span className='absolute top-1/2 left-0 block h-[1.5px] w-4 bg-black/80' style={{ y: '-50%' }} />
@@ -292,7 +295,6 @@ export function Projects() {
 										) : null}
 										<div>
 											<AnimatedPAfterH1 className={it.title ? 'md:mt-1 text-sm' : 'mt-4 text-sm'}>{it.tag}</AnimatedPAfterH1>
-											
 										</div>
 									</motion.div>
 								);

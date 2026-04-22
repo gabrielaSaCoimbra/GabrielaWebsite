@@ -112,7 +112,7 @@ export function ProjectSlug() {
 					{category ? CATEGORY_LABEL[category] || category : 'Back'}
 				</button>
 
-				<div className='mt-8 md:mt-16 text-sm'>
+				<div className='mt-8 md:mt-16 text-sm '>
 					<div className='lg:w-[560px] mb-2 '>{data.description?.length ? <PortableText value={data.description} /> : null}</div>
 
 					{data.year ? (

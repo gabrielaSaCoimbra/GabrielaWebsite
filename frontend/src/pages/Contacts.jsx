@@ -11,19 +11,16 @@ export function Contacts() {
 				<img src={contactImage} alt='Interior space' />
 			</div>
 
-			<div className='pb-6 mx-6 md:mx-0'>
-				
-				<div className='flex justify-center '>
-					
-					<div className=' w-full md:w-[560px] flex flex-col md:flex-row gap-3 md:gap-12 justify-between '>
-
+			<div className='pb-6 mx-6 md:mx-0 flex justify-center '>
+				<div className='md:w-[560px] '>
+					<div className='text-nav'>I am welcome to commissions, collaborations, and research-driven projects.</div>
+					<div className=' pt-6 w-full flex flex-col md:flex-row gap-3 md:gap-12 justify-between '>
 						<div className='flex flex-col '>
 							<span className='text-nav'>Office</span>
 							<span>
 								Rua de Pinto Bessa 290<br></br>4300-427 Porto
 							</span>
 						</div>
-						
 
 						<div className='flex flex-col gap-4'>
 							<div className='flex flex-col '>
@@ -42,12 +39,11 @@ export function Contacts() {
 								</a>
 							</div>
 							<div className='flex flex-col '>
-									<span className='text-nav'>Designed by</span>
+								<span className='text-nav'>Website designed by</span>
 
-									<a href='https://www.diogobrito.xyz' target='_blank' className='underline'>
-										Diogo Brito
-									</a>
-								
+								<a href='https://www.diogobrito.xyz' target='_blank' className='underline'>
+									Diogo Brito
+								</a>
 							</div>
 						</div>
 					</div>
