@@ -9,7 +9,7 @@ import img3 from '/public/AboutImgs/3.jpg';
 import img4 from '/public/AboutImgs/4.jpg';
 import img5 from '/public/AboutImgs/5.jpg';
 import img6 from '/public/AboutImgs/6.jpg';
-import bgImage from '/ok.jpg';
+import bgImage from '/ABOUT1.jpg';
 
 const IMAGES = [
 	{ src: img1, alt: '' },
@@ -88,7 +88,7 @@ function RevealWord({ word, index, total, progress }) {
 	});
 
 	return (
-		<motion.span style={{ opacity }} className='inline-block mr-[0.22em] text-white will-change-[opacity]'>
+		<motion.span style={{ opacity }} className='inline-block mr-[0.22em] text-white will-change-[opacity] '>
 			{word}
 		</motion.span>
 	);
