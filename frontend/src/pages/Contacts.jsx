@@ -14,7 +14,7 @@ export function Contacts() {
 				<img src={contactImage} alt='Interior space' />
 			</div>
 
-			<div className='pb-6 mx-6 md:mx-0 flex justify-center '>
+			<div className='pb-14 mx-6 md:mx-0 flex justify-center '>
 				<div className='md:w-[560px] '>
 					<div className=' w-full flex flex-col md:flex-row gap-3 md:gap-12 justify-between '>
 						<div className='flex flex-col '>
