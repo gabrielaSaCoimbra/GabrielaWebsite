@@ -3,9 +3,12 @@ import contactImage from '/piscina.jpg';
 export function Contacts() {
 	return (
 		<>
-			<section className='pt-[15vh] md:pt-[25vh] flex justify-center '>
+			<section className='pt-[15vh] md:pt-[25vh] w-full flex flex-col justify-center items-center gap-12 '>
 				<h1 className='text-lead font-[600] tracking-[-0.02em] text-black/80  text-center'>Let’s create together.</h1>
+				<div className='text-nav max-w-[40ch] text-center'>I am welcome to commissions, collaborations, and research-driven projects.</div>
 			</section>
+
+			
 
 			<div className='py-[4rem] '>
 				<img src={contactImage} alt='Interior space' />
@@ -13,8 +16,7 @@ export function Contacts() {
 
 			<div className='pb-6 mx-6 md:mx-0 flex justify-center '>
 				<div className='md:w-[560px] '>
-					<div className='text-nav'>I am welcome to commissions, collaborations, and research-driven projects.</div>
-					<div className=' pt-6 w-full flex flex-col md:flex-row gap-3 md:gap-12 justify-between '>
+					<div className=' w-full flex flex-col md:flex-row gap-3 md:gap-12 justify-between '>
 						<div className='flex flex-col '>
 							<span className='text-nav'>Office</span>
 							<span>

@@ -220,7 +220,7 @@ export function About() {
 			<section className='py-[5vh] md:py-[10vh] px-6 md:px-[7rem] text-black/80 flex items-center justify-center'></section>
 
 			<StickyRevealTransition bgImage={bgImage}>
-				<section className='h-screen flex items-center justify-center'>
+				<section className='h-screen flex items-center justify-center '>
 					<div className='flex flex-col justify-center items-center gap-6'>
 						<div className='text-lead font-[600] text-center'>Let's Connect?</div>
 						<NavLink to='/contact' className='bg-[rgba(0,0,0,0.04)] backdrop-blur-[50px] px-6 py-3 text-nav transition duration-500 hover:text-black hover:bg-[rgba(0,0,0,0.1)]'>
