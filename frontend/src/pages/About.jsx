@@ -9,7 +9,7 @@ import img3 from '/public/AboutImgs/3.jpg';
 import img4 from '/public/AboutImgs/4.jpg';
 import img5 from '/public/AboutImgs/5.jpg';
 import img6 from '/public/AboutImgs/6.jpg';
-import bgImage from '/ABOUT2.jpg';
+import bgImage from '/ABOUT1.jpg';
 
 const IMAGES = [
 	{ src: img1, alt: '' },
